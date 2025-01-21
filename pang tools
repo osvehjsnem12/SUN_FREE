@@ -1,0 +1,75 @@
+local scriptCode = [[
+-- 클라이언트 스크립트
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- 툴 이름 설정
+local toolNames = {"Handcuffs", "AK-47"}
+
+-- 게임의 "Assets" 폴더를 기다림
+local assetsFolder = ReplicatedStorage:WaitForChild("Assets")
+
+-- 툴을 인벤토리에 추가하는 함수
+local function addToolsToInventory()
+    for _, toolName in pairs(toolNames) do
+        local tool = assetsFolder:FindFirstChild(toolName) -- 툴을 찾기
+        if tool then
+            local clonedTool = tool:Clone()
+            clonedTool.Parent = LocalPlayer.Backpack -- 툴을 플레이어의 인벤토리에 추가
+        else
+            warn("Tool " .. toolName .. " not found in Assets!")
+        end
+    end
+end
+
+-- 게임 ID 확인: 15271273323일 경우에만 실행
+if game.PlaceId == 15271273323 then
+    -- GUI 생성
+    local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+    local Hub = Instance.new("Frame", ScreenGui)
+    Hub.Size = UDim2.new(0.375, 0, 0.325, 0)  -- 허브 크기
+    Hub.Position = UDim2.new(0.3125, 0, 0.45, 0)  -- 위치 조정
+    Hub.BackgroundColor3 = Color3.new(0, 0, 0)
+    Hub.BackgroundTransparency = 0.5
+    Hub.Active = true
+    Hub.Draggable = true -- 드래그 가능
+
+    -- 버튼 생성
+    local Button = Instance.new("TextButton", Hub)
+    Button.Size = UDim2.new(0.25, 0, 0.65, 0)  -- 버튼 크기
+    Button.Position = UDim2.new(0.375, 0, 0.175, 0)  -- 위치 조정
+    Button.Text = "툴 추가"
+    Button.TextColor3 = Color3.new(0, 0, 0)
+    Button.BackgroundColor3 = Color3.new(1, 0, 0)
+    Button.BorderSizePixel = 0
+    Button.Font = Enum.Font.SourceSans
+    Button.TextScaled = true
+
+    -- Made by SUN 텍스트 추가
+    local Footer = Instance.new("TextLabel", Hub)
+    Footer.Size = UDim2.new(1, 0, 0.2, 0)
+    Footer.Position = UDim2.new(0, 0, 0.8, 0)
+    Footer.Text = "Made by SUN"
+    Footer.TextColor3 = Color3.new(0, 0, 0)
+    Footer.BackgroundTransparency = 1
+    Footer.TextScaled = true
+    Footer.Font = Enum.Font.SourceSans
+
+    -- 버튼 클릭 이벤트
+    Button.MouseButton1Click:Connect(function()
+        -- 툴을 인벤토리에 추가
+        addToolsToInventory()
+    end)
+else
+    warn("This script can only be executed in the game with PlaceId 15271273323.")
+end
+]]
+
+-- 로드스트링 실행
+local func = loadstring(scriptCode)
+if func then
+    func()
+else
+    warn("Failed to load script")
+end
