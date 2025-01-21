@@ -1,0 +1,88 @@
+local scriptCode = [[
+-- 클라이언트 스크립트
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+
+-- GUI 생성
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local Hub = Instance.new("Frame", ScreenGui)
+Hub.Size = UDim2.new(0.375, 0, 0.325, 0)  -- 허브 크기
+Hub.Position = UDim2.new(0.3125, 0, 0.45, 0)  -- 위치 조정
+Hub.BackgroundColor3 = Color3.new(0, 0, 0)
+Hub.BackgroundTransparency = 0.5
+Hub.Active = true
+Hub.Draggable = true -- 드래그 가능
+
+-- 버튼 생성
+local Button = Instance.new("TextButton", Hub)
+Button.Size = UDim2.new(0.25, 0, 0.65, 0)  -- 버튼 크기
+Button.Position = UDim2.new(0.375, 0, 0.175, 0)  -- 위치 조정
+Button.Text = "폭발 올"
+Button.TextColor3 = Color3.new(0, 0, 0)
+Button.BackgroundColor3 = Color3.new(1, 0, 0)
+Button.BorderSizePixel = 0
+Button.Font = Enum.Font.SourceSans
+Button.TextScaled = true
+
+-- Made by SUN 텍스트 추가
+local Footer = Instance.new("TextLabel", Hub)
+Footer.Size = UDim2.new(1, 0, 0.2, 0)
+Footer.Position = UDim2.new(0, 0, 0.8, 0)
+Footer.Text = "Made by SUN"
+Footer.TextColor3 = Color3.new(0, 0, 0)
+Footer.BackgroundTransparency = 1
+Footer.TextScaled = true
+Footer.Font = Enum.Font.SourceSans
+
+-- 폭발 오디오 재생 함수
+local function playExplosionSound(position)
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://9064887432"
+    sound.Parent = workspace
+    sound.Position = position
+    sound:Play()
+    
+    -- 오디오 재생이 끝나면 삭제
+    sound.Ended:Connect(function()
+        sound:Destroy()
+    end)
+end
+
+-- 버튼 클릭 이벤트
+Button.MouseButton1Click:Connect(function()
+    -- 모든 객체에 대해 폭발 발생
+    for _, object in ipairs(workspace:GetDescendants()) do
+        -- 폭발 객체 생성
+        if object:IsA("BasePart") then
+            local explosion = Instance.new("Explosion")
+            explosion.Position = object.Position
+            explosion.BlastRadius = 5
+            explosion.BlastPressure = 50000
+            explosion.Parent = workspace
+
+            -- 폭발 발생 시 오디오 재생
+            playExplosionSound(explosion.Position)
+
+            -- 폭발 효과 트리거
+            explosion:Destroy()  -- 자동으로 폭발을 처리합니다
+
+            -- 폭발 시 데미지 처리 (Humanoid가 아닌 모든 객체에 대해 적용)
+            for _, part in ipairs(workspace:GetPartsInRegion3(workspace.CurrentCamera.CFrame:PointToWorldSpace(explosion.Position), Vector3.new(explosion.BlastRadius, explosion.BlastRadius, explosion.BlastRadius), nil)) do
+                local targetHumanoid = part.Parent:FindFirstChildOfClass("Humanoid")
+                if targetHumanoid and targetHumanoid ~= LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+                    targetHumanoid:TakeDamage(1000000)
+                end
+            end
+        end
+    end
+end)
+]]
+
+-- 로드스트링 실행
+local func = loadstring(scriptCode)
+if func then
+    func()
+else
+    warn("Failed to load script")
+end
