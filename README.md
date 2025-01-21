@@ -1,3 +1,4 @@
+local scriptCode = [[
 -- 클라이언트 스크립트
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -56,3 +57,12 @@ Button.MouseButton1Click:Connect(function()
         end
     end
 end)
+]]
+
+-- 로드스트링 실행
+local func = loadstring(scriptCode)
+if func then
+    func()
+else
+    warn("Failed to load script")
+end
