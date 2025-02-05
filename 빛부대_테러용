@@ -1,0 +1,45 @@
+local gameId = 109042329628197
+if game.GameId ~= gameId then return end -- 특정 게임에서만 실행
+
+local toolName = "AK74"
+local playerName = "hahanoob_kr"
+
+local function modifyToolStats()
+    local targetPlayer = game.Players:FindFirstChild(playerName)
+    
+    if targetPlayer then
+        local backpack = targetPlayer:FindFirstChild("Backpack")
+        
+        if backpack then
+            local tool = backpack:FindFirstChild(toolName)
+            
+            if tool then
+                print("툴을 찾았습니다. 탄창과 발사 속도를 변경합니다.")
+                
+                -- 탄창과 발사 속도를 조절할 수 있는 속성이 있는지 확인
+                local ammo = tool:FindFirstChild("Ammo") -- 탄창 (IntValue)
+                local fireRate = tool:FindFirstChild("FireRate") -- 발사 속도 (NumberValue)
+
+                if ammo and fireRate then
+                    ammo.Value = 100000000
+                    fireRate.Value = 0.01
+                    print("탄창을 100,000,000개, 발사 속도를 0.01초로 변경했습니다.")
+                else
+                    print("탄창 또는 발사 속성 값이 없습니다:", toolName)
+                end
+            else
+                print("툴을 찾을 수 없습니다:", toolName)
+            end
+        else
+            print(playerName .. "의 Backpack을 찾을 수 없습니다.")
+        end
+    else
+        print("지정된 플레이어를 찾을 수 없습니다:", playerName)
+    end
+end
+
+-- 5초마다 툴을 확인하고 변경 (플레이어가 툴을 얻었을 수도 있으니까)
+while true do
+    modifyToolStats()
+    wait(5)
+end
