@@ -41,7 +41,7 @@ titleCorner.Parent = titleBar
 local textLabel = Instance.new("TextLabel")
 textLabel.Size = UDim2.new(1, 0, 1, -30)
 textLabel.Position = UDim2.new(0, 0, 0, 30)
-textLabel.Text = "모바일 허브 UI"
+textLabel.Text = "Made by crow_0_inf"
 textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 textLabel.BackgroundTransparency = 1
 textLabel.Parent = mainFrame
@@ -66,12 +66,12 @@ local function createButton(text, position)
 end
 
 -- 🔹 윗부분 버튼 (연한 부분 아래로 내리기, 겹치지 않도록 조정)
-local topLeftButton = createButton("위 왼쪽", UDim2.new(0.05, 0, 0.2, 0))   
-local topRightButton = createButton("위 오른쪽", UDim2.new(0.55, 0, 0.2, 0)) 
+local topLeftButton = createButton("기능 없음", UDim2.new(0.05, 0, 0.2, 0))   
+local topRightButton = createButton("팽부 올킬", UDim2.new(0.55, 0, 0.2, 0)) 
 
 -- 🔹 아래 부분 버튼 (크기 줄이고 정렬)
-local bottomLeftButton = createButton("아래 왼쪽", UDim2.new(0.05, 0, 0.75, 0))
-local bottomRightButton = createButton("아래 오른쪽", UDim2.new(0.55, 0, 0.75, 0))
+local bottomLeftButton = createButton("기능 없음", UDim2.new(0.05, 0, 0.75, 0))
+local bottomRightButton = createButton("기능 없음", UDim2.new(0.55, 0, 0.75, 0))
 
 -- "위 오른쪽" 버튼 클릭 시 특정 스크립트 실행
 topRightButton.MouseButton1Click:Connect(function()
