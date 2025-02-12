@@ -27,7 +27,7 @@ Hub.Parent = ScreenGui
 local UICorner = Instance.new("UICorner", Hub)
 UICorner.CornerRadius = UDim.new(0.1, 0)
 
--- "Made by SUN" 라벨 생성
+-- "Made by console X" 라벨 생성
 local Label = Instance.new("TextLabel", Hub)
 Label.Size = UDim2.new(1, 0, 0.1, 0)
 Label.Position = UDim2.new(0, 0, 0, 0)
