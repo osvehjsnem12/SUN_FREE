@@ -1,0 +1,84 @@
+-- 로컬 플레이어 가져오기
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
+
+-- 기존 UI 제거 (중복 생성 방지)
+if PlayerGui:FindFirstChild("CustomHub") then
+    PlayerGui:FindFirstChild("CustomHub"):Destroy()
+end
+
+-- 새로운 ScreenGui 생성
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "CustomHub"
+ScreenGui.Parent = PlayerGui
+
+-- 허브 UI 프레임 생성
+local Hub = Instance.new("Frame")
+Hub.Size = UDim2.new(0.25, 0, 0.4, 0) -- 허브 크기
+Hub.Position = UDim2.new(0.375, 0, 0.3, 0) -- 중앙 정렬
+Hub.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- 어두운 색상
+Hub.BackgroundTransparency = 0.2 -- 반투명 효과
+Hub.Active = true
+Hub.Draggable = true
+Hub.Parent = ScreenGui
+
+-- 허브 UI 둥근 모서리 추가
+local UICorner = Instance.new("UICorner", Hub)
+UICorner.CornerRadius = UDim.new(0.1, 0)
+
+-- "Made by SUN" 라벨 생성
+local Label = Instance.new("TextLabel", Hub)
+Label.Size = UDim2.new(1, 0, 0.1, 0)
+Label.Position = UDim2.new(0, 0, 0, 0)
+Label.Text = "Made by SUN"
+Label.TextColor3 = Color3.new(1, 1, 1)
+Label.BackgroundTransparency = 1
+Label.Font = Enum.Font.SourceSansBold
+Label.TextScaled = true
+
+-- 버튼 생성 함수
+local function createButton(parent, text, size, position)
+    local Button = Instance.new("TextButton")
+    Button.Size = size
+    Button.Position = position
+    Button.Text = text
+    Button.TextColor3 = Color3.new(0, 0, 0)
+    Button.BackgroundColor3 = Color3.fromRGB(255, 50, 50) -- 버튼 색상 (빨강)
+    Button.BorderSizePixel = 0
+    Button.Font = Enum.Font.SourceSansBold
+    Button.TextScaled = true
+    Button.Parent = parent
+
+    -- 버튼 둥근 모서리 추가
+    local BtnCorner = Instance.new("UICorner", Button)
+    BtnCorner.CornerRadius = UDim.new(0.2, 0)
+
+    -- 버튼 테두리 추가
+    local Stroke = Instance.new("UIStroke", Button)
+    Stroke.Thickness = 2
+    Stroke.Color = Color3.fromRGB(200, 0, 0) -- 어두운 빨강
+
+    -- 버튼에 그라디언트 효과 추가
+    local Gradient = Instance.new("UIGradient", Button)
+    Gradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 70, 70)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 0, 0))
+    }
+    Gradient.Rotation = 90
+
+    return Button
+end
+
+-- 버튼 배치 설정
+local buttonSize = UDim2.new(0.25, 0, 0.2, 0) -- 버튼 크기
+local positions = {
+    {0.125, 0.15}, {0.625, 0.15}, -- 첫 번째 줄 (2개)
+    {0.125, 0.4}, {0.625, 0.4}, -- 두 번째 줄 (2개)
+    {0.125, 0.65}, {0.625, 0.65} -- 세 번째 줄 (2개)
+}
+
+-- 버튼 생성
+for i = 1, 6 do
+    createButton(Hub, "Button " .. i, buttonSize, UDim2.new(positions[i][1], 0, positions[i][2], 0))
+end
