@@ -1,74 +1,39 @@
--- 로컬 플레이어 가져오기
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
+-- 허브 UI와 버튼에 대한 설정
+local Hub = script.Parent  -- 허브 UI를 지정 (Hub가 스크립트의 부모로 설정되어 있다고 가정)
 
--- 기존 UI 제거 (중복 생성 방지)
-if PlayerGui:FindFirstChild("CustomHub") then
-    PlayerGui:FindFirstChild("CustomHub"):Destroy()
+local isRunning = false
+local message = "🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕"
+
+-- 채팅창 더럽히기 버튼을 클릭했을 때 메시지를 보내는 함수
+local function startSpamming()
+    if isRunning then
+        isRunning = false
+        print("도배 중지")
+    else
+        isRunning = true
+        print("도배 시작")
+        spawn(function()
+            while isRunning do
+                game:GetService("ReplicatedStorage").SayMessageRequest:FireServer(message, "All") -- 고정된 메시지 전송
+                wait(1) -- 1초 간격으로 메시지 전송
+            end
+        end)
+    end
 end
-
--- 새로운 ScreenGui 생성
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "CustomHub"
-ScreenGui.Parent = PlayerGui
-
--- 허브 UI 프레임 생성
-local Hub = Instance.new("Frame")
-Hub.Size = UDim2.new(0.25, 0, 0.4, 0) -- 허브 크기
-Hub.Position = UDim2.new(0.375, 0, 0.3, 0) -- 중앙 정렬
-Hub.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- 어두운 색상
-Hub.BackgroundTransparency = 0.2 -- 반투명 효과
-Hub.Active = true
-Hub.Draggable = true
-Hub.Parent = ScreenGui
-
--- 허브 UI 둥근 모서리 추가
-local UICorner = Instance.new("UICorner", Hub)
-UICorner.CornerRadius = UDim.new(0.1, 0)
-
--- "Made by saram04413" 라벨 생성
-local Label = Instance.new("TextLabel", Hub)
-Label.Size = UDim2.new(1, 0, 0.1, 0)
-Label.Position = UDim2.new(0, 0, 0, 0)
-Label.Text = "Made by saram04413"
-Label.TextColor3 = Color3.new(1, 1, 1)
-Label.BackgroundTransparency = 1
-Label.Font = Enum.Font.SourceSansBold
-Label.TextScaled = true
 
 -- 버튼 생성 함수
 local function createButton(parent, text, size, position)
     local Button = Instance.new("TextButton")
+    Button.Parent = parent
+    Button.Text = text
     Button.Size = size
     Button.Position = position
-    Button.Text = text
-    Button.TextColor3 = Color3.new(0, 0, 0)
-    Button.BackgroundColor3 = Color3.fromRGB(255, 50, 50) -- 버튼 색상 (빨강)
-    Button.BorderSizePixel = 0
-    Button.Font = Enum.Font.SourceSansBold
-    Button.TextScaled = true
-    Button.Parent = parent
-
-    -- 버튼 둥근 모서리 추가
-    local BtnCorner = Instance.new("UICorner", Button)
-    BtnCorner.CornerRadius = UDim.new(0.2, 0)
-
-    -- 버튼에 그라디언트 효과 추가
-    local Gradient = Instance.new("UIGradient", Button)
-    Gradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 70, 70)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 0, 0))
-    }
-    Gradient.Rotation = 90
-
-    -- 버튼 클릭 이벤트 추가
+    Button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    
     Button.MouseButton1Click:Connect(function()
-        print(text .. " 버튼 클릭 감지") -- 버튼 이름을 출력하는 부분
-
-        -- 버튼 클릭 시 실행할 동작 추가
+        -- 각 버튼 클릭 시 수행할 작업
         if text == "채팅창 더럽히기" then
-            print(" 버튼을 클릭했습니다!")
+            startSpamming()  -- 채팅창 더럽히기 버튼 클릭 시 도배 시작/중지
         elseif text == "Settings" then
             print("Settings 버튼을 클릭했습니다!")
         elseif text == "Shop" then
@@ -93,7 +58,7 @@ local positions = {
     {0.125, 0.65}, {0.625, 0.65} -- 세 번째 줄 (2개)
 }
 
--- 버튼 생성
+-- 허브 UI에 버튼 생성
 createButton(Hub, "채팅창 더럽히기", buttonSize, UDim2.new(positions[1][1], 0, positions[1][2], 0))
 createButton(Hub, "Settings", buttonSize, UDim2.new(positions[2][1], 0, positions[2][2], 0))
 createButton(Hub, "Shop", buttonSize, UDim2.new(positions[3][1], 0, positions[3][2], 0))
