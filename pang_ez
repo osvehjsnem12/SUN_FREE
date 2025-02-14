@@ -36,36 +36,39 @@ local function createButton(parent, text, size, position)
             startSpamming()  -- 채팅창 더럽히기 버튼 클릭 시 도배 시작/중지
         elseif text == "안티킥 설정" then
             ACBypass1:AddButton({
-	Title = "Anti Kick",
-	Description = "stops local scripts from kicking you",
-	Callback = function()
-		local mt = getrawmetatable(game)
+                Title = "Anti Kick",
+                Description = "stops local scripts from kicking you",
+                Callback = function()
+                    local mt = getrawmetatable(game)
 
-		setreadonly(mt, false)
+                    setreadonly(mt, false)
 
-		local oldmt = mt.__namecall
+                    local oldmt = mt.__namecall
 
-		mt.__namecall = newcclosure(function(Self, ...)
-			local method = getnamecallmethod()
+                    mt.__namecall = newcclosure(function(Self, ...)
+                        local method = getnamecallmethod()
 
-			if method == 'Kick' then
-				print("Tried To kick")
-				wait(9e9)
-				return nil
-			end
+                        if method == 'Kick' then
+                            print("Tried To kick")
+                            wait(9e9)
+                            return nil
+                        end
 
-			return oldmt(Self, ...)
-		end)
+                        return oldmt(Self, ...)
+                    end)
 
-		setreadonly(mt, true)
-	end
-})
-
+                    setreadonly(mt, true)
+                end
+            })
         elseif text == "킬올" then
-            getfenv().licenskey = ""
-loadstring(game:HttpGet(('https://raw.githubusercontent.com/0xlua10/XTerror/refs/heads/main/SYTIC_Hub')))()
-        elseif text == "Exit" then
-            print("Exit 버튼을 클릭했습니다!")
+            getgenv().exclude_me = false -- 본인 제외 여부
+getgenv().kill = true -- 죽일지 여부
+getgenv().fire = false -- 불을 붙일지 여부
+local func = ({pcall(loadstring,game.HttpGet(game,"https://raw.githubusercontent.com/xsinew/scripts/refs/heads/main/FangExploit.lua"))})[2]
+pcall(func,func)
+        elseif text == "수갑 올" then
+            showMessage("모든 플레이어에게 수갑을 채웁니다.")
+            cuffAllPlayers() -- 수갑 올 함수 실행
         elseif text == "Button 5" then
             print("Button 5 클릭됨!")
         elseif text == "Button 6" then
@@ -88,6 +91,9 @@ local positions = {
 createButton(Hub, "채팅창 더럽히기", buttonSize, UDim2.new(positions[1][1], 0, positions[1][2], 0))
 createButton(Hub, "안티킥 설정", buttonSize, UDim2.new(positions[2][1], 0, positions[2][2], 0))
 createButton(Hub, "킬올", buttonSize, UDim2.new(positions[3][1], 0, positions[3][2], 0))
-createButton(Hub, "Exit", buttonSize, UDim2.new(positions[4][1], 0, positions[4][2], 0))
+createButton(Hub, "수갑 올", buttonSize, UDim2.new(positions[4][1], 0, positions[4][2], 0), function()
+    showMessage("모든 플레이어에게 수갑을 채웁니다.")
+    cuffAllPlayers() -- 수갑 올 함수 실행
+end)
 createButton(Hub, "Button 5", buttonSize, UDim2.new(positions[5][1], 0, positions[5][2], 0))
 createButton(Hub, "Button 6", buttonSize, UDim2.new(positions[6][1], 0, positions[6][2], 0))
