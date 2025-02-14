@@ -295,23 +295,23 @@ if currentGameId == allowedGameId then
         createButton(Hub, buttonInfo.text, buttonSize, UDim2.new(positions[i][1], 0, positions[i][2], 0), buttonInfo.callback)
     end
 
-    -- 개발자 텍스트 추가 (허브 안에 위치하도록)
+    -- 개발자 텍스트 추가 (허브 위쪽에 배치)
     local devText = Instance.new("TextLabel")
     devText.Text = "Made by saram04413"
     devText.TextColor3 = Color3.fromRGB(255, 255, 255)
     devText.TextSize = 14
-    devText.Position = UDim2.new(0.5, 0, 0.85, 0)  -- 허브 하단에 배치
+    devText.Position = UDim2.new(0.5, 0, 0.05, 0)  -- 허브 위쪽에 배치
     devText.AnchorPoint = Vector2.new(0.5, 0)
     devText.BackgroundTransparency = 1
     devText.Font = Enum.Font.SourceSans
     devText.Parent = Hub
 
-    -- Discord 초대 링크 텍스트 추가 (작은 글씨로)
+    -- Discord 초대 링크 텍스트 추가 (허브 아래쪽에 배치)
     local discordText = Instance.new("TextLabel")
-    discordText.Text = "스크립트 -> https://discord.gg/KFqPnmGBTZ"
+    discordText.Text = "디코 -> https://discord.gg/KFqPnmGBTZ"
     discordText.TextColor3 = Color3.fromRGB(255, 255, 255)
     discordText.TextSize = 10
-    discordText.Position = UDim2.new(0.5, 0, 0.92, 0)  -- 허브 하단에 추가
+    discordText.Position = UDim2.new(0.5, 0, 0.92, 0)  -- 허브 하단에 배치
     discordText.AnchorPoint = Vector2.new(0.5, 0)
     discordText.BackgroundTransparency = 1
     discordText.Font = Enum.Font.SourceSans
