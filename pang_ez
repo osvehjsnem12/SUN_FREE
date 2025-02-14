@@ -66,7 +66,198 @@ if currentGameId == allowedGameId then
     end
 
     -- ESP 로컬 플레이어를 제외한 모든 풀레이어에게 박스 씌우기
-    print("이걸 지우고 ESP 스크립트를 넣어 주세요")
+    local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local CoreGui = game:GetService("CoreGui")
+
+local Player = Players.LocalPlayer
+local espEnabled = false
+local espTransparency = 0.3
+local espObjects = {}
+
+-- 캐릭터의 루트 파트를 가져오는 함수
+local function getRoot(character)
+	return character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Head")
+end
+
+-- 숫자를 반올림하는 함수
+local function round(num, numDecimalPlaces)
+	local mult = 10^(numDecimalPlaces or 0)
+	return math.floor(num * mult + 0.5) / mult
+end
+
+-- 플레이어에 대한 ESP를 생성하는 함수
+local function createESP(plr)
+	if plr == Player then return end -- 자기 자신에 대한 ESP는 생성하지 않음
+
+	local function setupESP()
+		local character = plr.Character
+		if not character or not character:FindFirstChild("Humanoid") then return end
+
+		local rootPart = getRoot(character)
+		if not rootPart then return end
+
+		local existingESP = espObjects[plr.UserId]
+		if existingESP then
+			existingESP:Destroy()
+			espObjects[plr.UserId] = nil
+		end
+
+		local ESPholder = Instance.new("Folder")
+		ESPholder.Name = plr.Name..'_ESP'
+		ESPholder.Parent = CoreGui
+		espObjects[plr.UserId] = ESPholder
+
+		-- 캐릭터의 각 파트에 대해 ESP 박스 생성
+		for _, part in pairs(character:GetChildren()) do
+			if part:IsA("BasePart") then
+				local adornment = Instance.new("BoxHandleAdornment")
+				adornment.Name = plr.Name
+				adornment.Parent = ESPholder
+				adornment.Adornee = part
+				adornment.AlwaysOnTop = true
+				adornment.ZIndex = 10
+				adornment.Size = part.Size
+				adornment.Transparency = espTransparency
+				adornment.Color3 = plr.TeamColor.Color
+			end
+		end
+
+		-- 캐릭터의 머리 위에 텍스트 GUI 생성
+		local head = character:FindFirstChild("Head")
+		if head then
+			local BillboardGui = Instance.new("BillboardGui")
+			local TextLabel = Instance.new("TextLabel")
+			BillboardGui.Adornee = head
+			BillboardGui.Name = plr.Name
+			BillboardGui.Parent = ESPholder
+			BillboardGui.Size = UDim2.new(0, 100, 0, 150)
+			BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+			BillboardGui.AlwaysOnTop = true
+			TextLabel.Parent = BillboardGui
+			TextLabel.BackgroundTransparency = 1
+			TextLabel.Position = UDim2.new(0, 0, 0, -50)
+			TextLabel.Size = UDim2.new(0, 100, 0, 100)
+			TextLabel.Font = Enum.Font.SourceSansSemibold
+			TextLabel.TextSize = 20
+			TextLabel.TextColor3 = Color3.new(1, 1, 1)
+			TextLabel.TextStrokeTransparency = 0
+			TextLabel.TextYAlignment = Enum.TextYAlignment.Bottom
+			TextLabel.Text = 'Name: '..plr.Name
+
+			-- ESP 업데이트 함수
+			local function updateESP()
+				if not ESPholder.Parent then return end
+				if character and rootPart and character:FindFirstChildOfClass("Humanoid") then
+					local playerRootPart = getRoot(Player.Character)
+					if playerRootPart and rootPart then
+						local distance = round((rootPart.Position - playerRootPart.Position).Magnitude, 1)
+						local health = round(character:FindFirstChildOfClass('Humanoid').Health, 1)
+						TextLabel.Text = 'Name: '..plr.Name..' | Health: '..health..' | Distance: '..distance
+					end
+				end
+			end
+
+			-- RenderStepped에서 ESP 업데이트 루프 실행
+			local espLoopFunc = RunService.RenderStepped:Connect(updateESP)
+
+			-- 캐릭터가 제거될 때 ESP 및 업데이트 루프 제거
+			local function onCharacterRemoving()
+				espLoopFunc:Disconnect()
+				if ESPholder.Parent then
+					ESPholder:Destroy()
+				end
+			end
+
+			-- 새 캐릭터가 추가될 때 ESP 재설정
+			local function onCharacterAdded(newCharacter)
+				setupESP() -- 새로운 캐릭터가 추가되면 ESP 재설정
+			end
+
+			-- 이벤트 연결
+			plr.CharacterRemoving:Connect(onCharacterRemoving)
+			plr.CharacterAdded:Connect(onCharacterAdded)
+
+			-- 팀 색상 변경 시 ESP 색상 업데이트
+			local function onTeamChanged()
+				for _, adornment in pairs(ESPholder:GetChildren()) do
+					if adornment:IsA("BoxHandleAdornment") then
+						adornment.Color3 = plr.TeamColor.Color
+					end
+				end
+			end
+			plr:GetPropertyChangedSignal("TeamColor"):Connect(onTeamChanged)
+		end
+	end
+
+	-- 캐릭터가 존재할 경우 ESP 설정
+	if plr.Character then
+		setupESP()
+	end
+
+	-- 새로 추가된 캐릭터에 대해서도 ESP 설정
+	plr.CharacterAdded:Connect(setupESP)
+end
+
+-- 플레이어가 떠날 때 ESP 제거
+local function removeESPForPlayer(plr)
+	local esp = espObjects[plr.UserId]
+	if esp then
+		esp:Destroy()
+		espObjects[plr.UserId] = nil
+	end
+end
+
+-- 모든 플레이어에 대한 ESP 설정
+local function applyESP()
+	for _, plr in pairs(Players:GetPlayers()) do
+		createESP(plr)
+	end
+end
+
+-- 모든 플레이어에 대한 ESP 제거
+local function removeESP()
+	for _, esp in pairs(espObjects) do
+		if esp then
+			esp:Destroy()
+		end
+	end
+	espObjects = {}
+end
+
+-- 자신의 캐릭터가 추가될 때 모든 플레이어에게 ESP 적용
+Player.CharacterAdded:Connect(function()
+	if espEnabled then
+		applyESP()
+	end
+end)
+
+-- 새로 추가된 플레이어에게 ESP 적용
+Players.PlayerAdded:Connect(function(plr)
+	if espEnabled then
+		createESP(plr)
+	end
+end)
+
+-- 플레이어가 떠날 때 ESP 제거
+Players.PlayerRemoving:Connect(function(plr)
+	removeESPForPlayer(plr)
+end)
+
+-- 플레이어의 캐릭터가 사망하거나 재생성될 때 ESP 업데이트
+Players.PlayerAdded:Connect(function(plr)
+	plr.CharacterAdded:Connect(function(character)
+		if espEnabled then
+			createESP(plr)
+		end
+	end)
+end)
+
+-- 게임 시작 시 이미 존재하는 플레이어들에게 ESP 적용
+if espEnabled then
+	applyESP()
+end
+
     -- 안티 킥 기능
     local function antiKick()
         local mt = getrawmetatable(game)
