@@ -1,5 +1,8 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ChatRemote = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents")
+local SayMessageRequest = ChatRemote:WaitForChild("SayMessageRequest")
 
 -- ScreenGui 생성
 local gui = Instance.new("ScreenGui")
@@ -15,48 +18,78 @@ mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 mainFrame.BorderSizePixel = 0
 mainFrame.Parent = gui
 
--- 꼭짓점을 둥글게 만들기 위해 UICorner 추가
-local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(0, 16)
-corner.Parent = mainFrame
-
--- TitleBar (드래그 가능 영역, 색 더 진하게)
+-- TitleBar (드래그 가능 영역)
 local titleBar = Instance.new("Frame")
 titleBar.Size = UDim2.new(1, 0, 0, 30)
-titleBar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)  -- 더 진한 색
+titleBar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 titleBar.BorderSizePixel = 0
 titleBar.Parent = mainFrame
 
--- ❌ TitleBar의 꼭짓점 둥글게 만드는 코드 제거
+-- 허브 UI 내용 예제 (텍스트)
+local textLabel = Instance.new("TextLabel")
+textLabel.Size = UDim2.new(1, 0, 1, -30)
+textLabel.Position = UDim2.new(0, 0, 0, 30)
+textLabel.Text = "Made by crow_0_inf"
+textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+textLabel.BackgroundTransparency = 1
+textLabel.Parent = mainFrame
 
 -- 버튼 생성 함수
-local function createButton(text, position)
+local function createButton(text, position, action)
     local button = Instance.new("TextButton")
-    button.Size = UDim2.new(0.4, 0, 0, 30)  -- 크기 줄임
+    button.Size = UDim2.new(0.4, 0, 0, 30)
     button.Position = position
     button.Text = text
-    button.TextColor3 = Color3.fromRGB(0, 0, 0)  -- 검정색 텍스트
-    button.TextSize = 18  -- 🔹 텍스트 크기 증가
-    button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- 빨간 버튼
+    button.TextColor3 = Color3.fromRGB(0, 0, 0)
+    button.TextSize = 18
+    button.BackgroundColor3 = Color3.fromRGB(255, 0, 0) 
     button.Parent = mainFrame
-    
-    -- 버튼 둥글게 만들기
+
     local buttonCorner = Instance.new("UICorner")
     buttonCorner.CornerRadius = UDim.new(0, 10)
     buttonCorner.Parent = button
 
+    if action then
+        button.MouseButton1Click:Connect(action)
+    end
+
     return button
 end
 
--- 🔹 윗부분 버튼 (연한 부분 아래로 내리기, 겹치지 않도록 조정)
-local topLeftButton = createButton("위 왼쪽", UDim2.new(0.05, 0, 0.2, 0))   
-local topRightButton = createButton("위 오른쪽", UDim2.new(0.55, 0, 0.2, 0)) 
+-- "도배" 버튼 (채팅 테러 스크립트)
+local isRunning = false
+local messages = {
+    "팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐? 팽부대 왜하냐?",
+    "성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ 성범죄자 부대 ㅉ ",
+    "코디: h t t p s: // discord . gg/ Qu4tmwuR8a 코디: h t t p s: // discord . gg/ Qu4tmwuR8a 코디: h t t p s: // discord . gg/ Qu4tmwuR8a 코디: h t t p s: // discord . gg/ Qu4tmwuR8a 코디: h t t p s: // discord . gg/ Qu4tmwuR8a 코디: h t t p s: // discord . gg/ Qu4tmwuR8a 코디: h t t p s: // discord . gg/ Qu4tmwuR8a 코디: h t t p s: // discord . gg/ Qu4tmwuR8a 코디: h t t p s: // discord . gg/ Qu4tmwuR8a ",
+    "🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💦🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💦🖕💩🖕💩🖕💦🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩"
+}
 
--- 🔹 아래 부분 버튼 (크기 줄이고 정렬)
-local bottomLeftButton = createButton("아래 왼쪽", UDim2.new(0.05, 0, 0.75, 0))
-local bottomRightButton = createButton("아래 오른쪽", UDim2.new(0.55, 0, 0.75, 0))
+local function togglePromotion()
+    if isRunning then
+        isRunning = false
+        spamButton.Text = "도배 시작"
+        spamButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- 다시 빨간색으로 변경
+    else
+        isRunning = true
+        spamButton.Text = "도배 중지"
+        spamButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- 초록색으로 변경
+        spawn(function()
+            while isRunning do
+                local message = messages[math.random(#messages)] -- 랜덤 메시지 선택
+                SayMessageRequest:FireServer(message, "All")
+                wait(1) -- 1초 대기
+            end
+        end)
+    end
+end
 
--- 톱니 모양 버튼 생성 (왼쪽 고정)
+-- 버튼 배치
+swordKillButton = createButton("검 올킬", UDim2.new(0.05, 0, 0.2, 0), swordKill)  
+spamButton = createButton("도배 시작", UDim2.new(0.05, 0, 0.75, 0), togglePromotion)  
+createButton("인피니티야드", UDim2.new(0.55, 0, 0.75, 0), runInfiniteYield)
+
+-- 톱니 모양 버튼 생성 (허브 보이기/숨기기)
 local settingsButton = Instance.new("TextButton")
 settingsButton.Size = UDim2.new(0, 50, 0, 50)
 settingsButton.Position = UDim2.new(0, 10, 0.5, -25)
@@ -71,28 +104,36 @@ settingsButton.MouseButton1Click:Connect(function()
     mainFrame.Visible = not mainFrame.Visible
 end)
 
--- ✅ 드래그 기능 수정 (화면 이동 문제 해결)
+-- 드래그 기능 추가
 local UserInputService = game:GetService("UserInputService")
-local dragging = false
-local dragStart, startPos
+local dragging, dragInput, dragStart, startPos
 
 titleBar.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         dragging = true
         dragStart = input.Position
         startPos = mainFrame.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
     end
 end)
 
-titleBar.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        dragging = false
+titleBar.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
     end
 end)
 
 UserInputService.InputChanged:Connect(function(input)
-    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+    if dragging and input == dragInput then
         local delta = input.Position - dragStart
-        mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        local newX = startPos.X.Offset + delta.X
+        local newY = startPos.Y.Offset + delta.Y
+
+        mainFrame.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
     end
 end)
