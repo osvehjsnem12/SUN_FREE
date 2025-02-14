@@ -1,8 +1,5 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local ChatRemote = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents")
-local SayMessageRequest = ChatRemote:WaitForChild("SayMessageRequest")
 
 -- ScreenGui 생성
 local gui = Instance.new("ScreenGui")
@@ -24,15 +21,6 @@ titleBar.Size = UDim2.new(1, 0, 0, 30)
 titleBar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 titleBar.BorderSizePixel = 0
 titleBar.Parent = mainFrame
-
--- 허브 UI 내용 예제 (텍스트)
-local textLabel = Instance.new("TextLabel")
-textLabel.Size = UDim2.new(1, 0, 1, -30)
-textLabel.Position = UDim2.new(0, 0, 0, 30)
-textLabel.Text = "Made by crow_0_inf"
-textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-textLabel.BackgroundTransparency = 1
-textLabel.Parent = mainFrame
 
 -- 버튼 생성 함수
 local function createButton(text, position, action)
@@ -56,37 +44,43 @@ local function createButton(text, position, action)
     return button
 end
 
--- "도배" 버튼 (채팅 테러 스크립트)
-local isRunning = false
-local messages = {
-    "팽부 대 왜하냐?",
-    "성 범 죄 자 부 대 ㅉ",
-    "코디: ht tps : // discord . gg/ Qu4tmwuR8a",
-    "프모 부대냐?",
-    "팽부 = 망겜"
-}
-
-local function togglePromotion()
-    if isRunning then
-        isRunning = false
-        spamButton.Text = "도배 시작"
-        spamButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- 다시 빨간색으로 변경
+-- 채팅 메시지 전송 함수
+local function sendChatMessage(msg)
+    local chatService = game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents")
+    if chatService then
+        -- 기본 채팅 시스템이 활성화된 경우
+        chatService.SayMessageRequest:FireServer(msg, "All")
     else
-        isRunning = true
-        spamButton.Text = "도배 중지"
-        spamButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- 초록색으로 변경
-        spawn(function()
-            while isRunning do
-                local message = messages[math.random(#messages)] -- 랜덤 메시지 선택
-                SayMessageRequest:FireServer(message, "All")
-                wait(1) -- 1초 대기
-            end
-        end)
+        -- 기본 채팅 시스템이 없는 경우 UI에 출력
+        warn("기본 채팅 시스템이 비활성화됨. UI로 메시지 표시.")
+        local chatFrame = playerGui:FindFirstChild("ChatFrame")
+        if not chatFrame then
+            chatFrame = Instance.new("ScreenGui")
+            chatFrame.Name = "ChatFrame"
+            chatFrame.Parent = playerGui
+
+            local textLabel = Instance.new("TextLabel")
+            textLabel.Size = UDim2.new(0.8, 0, 0, 30)
+            textLabel.Position = UDim2.new(0.1, 0, 0.8, 0)
+            textLabel.BackgroundTransparency = 0.5
+            textLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+            textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            textLabel.TextScaled = true
+            textLabel.Parent = chatFrame
+        end
+
+        chatFrame:FindFirstChildOfClass("TextLabel").Text = msg
+        task.delay(5, function() chatFrame:Destroy() end) -- 5초 후 삭제
     end
 end
 
--- 버튼 배치
-spamButton = createButton("도배 시작", UDim2.new(0.05, 0, 0.75, 0), togglePromotion)  
+-- 채팅 버튼 추가
+createButton("채팅", UDim2.new(0.55, 0, 0.75, 0), function()
+    sendChatMessage("팽부대 왜 하냐?"),
+    sendChatMessage("성 범 죄자 게임ㅉ"),
+    sendChatMessage("팽부대 = 프모 부대"),
+    sendChatMessage("팽부대 수듄ㅋ")
+end)
 
 -- 톱니 모양 버튼 생성 (허브 보이기/숨기기)
 local settingsButton = Instance.new("TextButton")
@@ -101,38 +95,4 @@ settingsButton.Parent = gui
 mainFrame.Visible = false
 settingsButton.MouseButton1Click:Connect(function()
     mainFrame.Visible = not mainFrame.Visible
-end)
-
--- 드래그 기능 추가
-local UserInputService = game:GetService("UserInputService")
-local dragging, dragInput, dragStart, startPos
-
-titleBar.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        dragging = true
-        dragStart = input.Position
-        startPos = mainFrame.Position
-
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end
-end)
-
-titleBar.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-        dragInput = input
-    end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-    if dragging and input == dragInput then
-        local delta = input.Position - dragStart
-        local newX = startPos.X.Offset + delta.X
-        local newY = startPos.Y.Offset + delta.Y
-
-        mainFrame.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
-    end
 end)
