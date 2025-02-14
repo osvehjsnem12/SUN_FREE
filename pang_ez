@@ -50,10 +50,11 @@ if currentGameId == allowedGameId then
         local BtnCorner = Instance.new("UICorner", Button)
         BtnCorner.CornerRadius = UDim.new(0.2, 0)
 
--- 버튼 클릭 시 콜백 함수 실행 (버튼을 클릭해야만 실행됨)
-    Button.MouseButton1Click:Connect(function()
-        callback()  -- 버튼 클릭 시 콜백 실행
-    end)
+-- 버튼 클릭 시 콜백 함수 실행
+        Button.MouseButton1Click:Connect(callback)
+
+        return Button
+    end
 
     -- 킬올 기능
     local function killAllPlayers()
