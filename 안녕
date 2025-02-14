@@ -2,7 +2,7 @@
 local Hub = script.Parent  -- 허브 UI를 지정 (Hub가 스크립트의 부모로 설정되어 있다고 가정)
 
 local isRunning = false
-local message = "🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕💩🖕"
+local message = "팽부대 왜함?"
 
 -- 채팅창 더럽히기 버튼을 클릭했을 때 메시지를 보내는 함수
 local function startSpamming()
@@ -34,10 +34,36 @@ local function createButton(parent, text, size, position)
         -- 각 버튼 클릭 시 수행할 작업
         if text == "채팅창 더럽히기" then
             startSpamming()  -- 채팅창 더럽히기 버튼 클릭 시 도배 시작/중지
-        elseif text == "Settings" then
-            print("Settings 버튼을 클릭했습니다!")
-        elseif text == "Shop" then
-            print("Shop 버튼을 클릭했습니다!")
+        elseif text == "안티킥 설정" then
+            ACBypass1:AddButton({
+	Title = "Anti Kick",
+	Description = "stops local scripts from kicking you",
+	Callback = function()
+		local mt = getrawmetatable(game)
+
+		setreadonly(mt, false)
+
+		local oldmt = mt.__namecall
+
+		mt.__namecall = newcclosure(function(Self, ...)
+			local method = getnamecallmethod()
+
+			if method == 'Kick' then
+				print("Tried To kick")
+				wait(9e9)
+				return nil
+			end
+
+			return oldmt(Self, ...)
+		end)
+
+		setreadonly(mt, true)
+	end
+})
+
+        elseif text == "킬올" then
+            getfenv().licenskey = ""
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/0xlua10/XTerror/refs/heads/main/SYTIC_Hub')))()
         elseif text == "Exit" then
             print("Exit 버튼을 클릭했습니다!")
         elseif text == "Button 5" then
@@ -60,8 +86,8 @@ local positions = {
 
 -- 허브 UI에 버튼 생성
 createButton(Hub, "채팅창 더럽히기", buttonSize, UDim2.new(positions[1][1], 0, positions[1][2], 0))
-createButton(Hub, "Settings", buttonSize, UDim2.new(positions[2][1], 0, positions[2][2], 0))
-createButton(Hub, "Shop", buttonSize, UDim2.new(positions[3][1], 0, positions[3][2], 0))
+createButton(Hub, "안티킥 설정", buttonSize, UDim2.new(positions[2][1], 0, positions[2][2], 0))
+createButton(Hub, "킬올", buttonSize, UDim2.new(positions[3][1], 0, positions[3][2], 0))
 createButton(Hub, "Exit", buttonSize, UDim2.new(positions[4][1], 0, positions[4][2], 0))
 createButton(Hub, "Button 5", buttonSize, UDim2.new(positions[5][1], 0, positions[5][2], 0))
 createButton(Hub, "Button 6", buttonSize, UDim2.new(positions[6][1], 0, positions[6][2], 0))
