@@ -1,0 +1,169 @@
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+ 
+local PhantomForcesWindow = Library:NewWindow("CE 허브")
+ 
+local KillingCheats = PhantomForcesWindow:NewSection("CE 모음")
+ 
+KillingCheats:CreateButton("폭발 올", function()
+
+        
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- CE_Events 찾기
+local CE_Events
+for i, v in next, getgc(true) do 
+    if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'equipEvent') then
+        CE_Events = v
+        break -- CE_Events가 발견되면 루프를 종료
+    end
+end
+
+-- CE_Events가 존재하는 경우 처리
+if CE_Events then
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= LocalPlayer then
+            -- explosiveEvent 호출 (폭발 이벤트)
+            CE_Events["explosiveEvent"]:FireServer(nil, plr.Character:GetPivot().Position, 50000, 1213320, 1321330, nil, nil, nil, nil, nil, nil, nil, "Auth")
+        end
+    end
+end
+        
+end)
+
+KillingCheats:CreateButton("CE 핑핵", function()
+
+        
+loadstring(game:HttpGet("https://raw.githubusercontent.com/himc573/himc573/refs/heads/main/%40%ED%9E%98%EC%B0%ACHUB-%ED%9E%98%EC%B0%AC%EC%9D%B4%EC%A0%9C%EC%9E%91"))()
+        
+end)
+
+KillingCheats:CreateButton("CE 핑핵2", function()
+
+        
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- CE_Events 찾기
+local CE_Events
+for i, v in next, getgc(true) do 
+    if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'equipEvent') then
+        CE_Events = v
+        break -- CE_Events가 발견되면 루프 종료
+    end
+end
+
+-- CE_Events가 존재하는 경우 처리
+if CE_Events then
+    while true do
+        for _, plr in pairs(Players:GetPlayers()) do
+            if plr ~= LocalPlayer and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                -- 폭발 이벤트 발생 (데미지 이벤트 제외)
+                CE_Events["explosiveEvent"]:FireServer(nil, plr.Character.HumanoidRootPart.Position, 50000, 1213320, 1321330, nil, nil, nil, nil, nil, nil, nil, "Auth")
+                print(plr.Name .. "에게 폭발 이벤트를 발생시켰습니다.")
+            end
+        end
+        wait(0.1) -- 0.1초 간격으로 반복
+    end
+end
+        
+end)
+
+KillingCheats:CreateButton("CE 무적", function()
+
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- CE_Events 찾기
+local CE_Events
+for i, v in next, getgc(true) do
+    if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'equipEvent') then
+        CE_Events = v
+        break -- CE_Events가 발견되면 루프 종료
+    end
+end
+
+-- 로컬 플레이어의 무적 상태 설정
+if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+    local humanoid = LocalPlayer.Character.Humanoid
+
+    -- 로컬 플레이어의 HP를 무한으로 설정
+    humanoid.Health = math.huge
+    humanoid.MaxHealth = math.huge
+
+    -- 로컬 플레이어의 모든 부품을 파괴되지 않게 만들기
+    for _, part in pairs(LocalPlayer.Character:GetChildren()) do
+        if part:IsA("BasePart") then
+            -- 파괴 방지 (체력 없음, 장애물로 처리)
+            part.Anchored = true
+            part.CanCollide = true
+        end
+    end
+
+    -- 추가적으로 로컬 플레이어가 무적 상태로 존재하도록 설정
+    humanoid:SetAttribute("ImmuneToDamage", true)  -- 이 부분은 설정이 가능하면 설정합니다.
+end
+
+print(LocalPlayer.Name .. "은(는) 무적 상태로 설정되었습니다.")
+        
+end)
+
+KillingCheats:CreateButton("CE 브링 올", function()
+
+        
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- CE_Events 찾기
+local CE_Events
+for i, v in next, getgc(true) do
+    if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'equipEvent') then
+        CE_Events = v
+        break
+    end
+end
+
+-- 로컬 플레이어의 위치를 기준으로 다른 플레이어들을 이동
+if CE_Events and LocalPlayer.Character then
+    local localPosition = LocalPlayer.Character.HumanoidRootPart.Position
+
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= LocalPlayer and plr.Character then
+            local targetCharacter = plr.Character
+            local targetHumanoidRootPart = targetCharacter:FindFirstChild("HumanoidRootPart")
+            
+            -- 로컬 플레이어의 위치로 다른 플레이어 이동시키기
+            if targetHumanoidRootPart then
+                -- 이동시키는 코드 (CFrame을 이용해 위치 이동)
+                targetHumanoidRootPart.CFrame = CFrame.new(localPosition)
+            end
+        end
+    end
+end
+
+print("모든 플레이어가 로컬 플레이어의 위치로 이동했습니다.")
+        
+end)
+
+KillingCheats:CreateButton("CE 올 플링", function()
+
+        
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- 로컬 플레이어를 제외한 모든 플레이어의 스피드를 math.huge로 설정
+for _, plr in pairs(Players:GetPlayers()) do
+    if plr ~= LocalPlayer and plr.Character then
+        local humanoid = plr.Character:FindFirstChild("Humanoid")
+        
+        -- Humanoid가 존재하는 경우 WalkSpeed를 math.huge로 설정
+        if humanoid then
+            humanoid.WalkSpeed = math.huge
+        end
+    end
+end
+
+print("모든 플레이어의 속도를 math.huge로 설정했습니다.")
+        
+end)
