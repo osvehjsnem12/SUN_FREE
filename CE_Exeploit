@@ -176,11 +176,10 @@ end)
 KillingCheats:CreateButton("CE 맵 삭제", function()
 
         
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
+ local Players = game:GetService("Players")
+local CE_Events
 
 -- CE_Events 찾기
-local CE_Events
 for i, v in next, getgc(true) do
     if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'equipEvent') then
         CE_Events = v
@@ -188,102 +187,34 @@ for i, v in next, getgc(true) do
     end
 end
 
--- 맵의 모든 파트 삭제 함수
-local function deleteMapObjects()
-    for _, object in pairs(workspace:GetChildren()) do
-        if object:IsA("Part") or object:IsA("Model") then
-            -- 파트나 모델 삭제
-            object:Destroy()
+-- 100조만큼 이동할 값 (100조 = 100,000,000,000,000)
+local distance = 100000000000000
+
+-- 플레이어를 100조만큼 이동시키는 함수
+local function movePlayer(player)
+    if player.Character then
+        local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            -- 현재 위치에서 100조 만큼 X 방향으로 이동
+            humanoidRootPart.CFrame = humanoidRootPart.CFrame * CFrame.new(distance, 0, 0)
         end
     end
 end
 
--- CE_Events로 로컬 플레이어 대미지 & 폭발 무효화
-if CE_Events then
-    -- 모든 플레이어에게 맵 삭제 명령
-    for _, plr in pairs(Players:GetPlayers()) do
-        if plr ~= Players.LocalPlayer then  -- 로컬 플레이어 제외
-            CE_Events["damageEvent"]:FireServer(nil, 0)  -- 대미지 이벤트 예시
-            -- 필요에 따라 다른 이벤트를 추가로 처리 가능
-        end
+-- 로컬 플레이어를 제외한 모든 플레이어를 100조만큼 이동
+for _, plr in pairs(Players:GetPlayers()) do
+    if plr ~= Players.LocalPlayer then  -- 로컬 플레이어 제외
+        movePlayer(plr)
     end
 end
 
--- 맵을 삭제하고 싶을 때 실행
-deleteMapObjects()
-
-print("모든 맵 오브젝트가 삭제되었습니다.")
+print("모든 플레이어가 100조만큼 이동되었습니다.")
         
 end)
 
-KillingCheats:CreateButton("CE 모든 플레이어에게 공지 띄어기", function()
+KillingCheats:CreateButton("https://discord.gg/KFqPnmGBTZ", function()
 
         
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
--- CE_Events 찾기
-local CE_Events
-for i, v in next, getgc(true) do
-    if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'equipEvent') then
-        CE_Events = v
-        break
-    end
-end
-
--- 허브 UI 생성 함수
-local function createHub(player)
-    -- 허브 프레임 생성
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Parent = player.PlayerGui
-    screenGui.IgnoreGuiInset = true
-
-    local hubFrame = Instance.new("Frame")
-    hubFrame.Size = UDim2.new(0.5, 0, 0.3, 0)  -- 허브 크기 설정
-    hubFrame.Position = UDim2.new(0.25, 0, 0.35, 0)  -- 화면 중앙에 배치
-    hubFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    hubFrame.BackgroundTransparency = 0.5  -- 반투명
-    hubFrame.Parent = screenGui
-
-    -- 텍스트 라벨 생성
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Size = UDim2.new(1, 0, 1, 0)
-    textLabel.Position = UDim2.new(0, 0, 0, 0)
-    textLabel.Text = "https://discord.gg/KFqPnmGBTZ"
-    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- 흰색 텍스트
-    textLabel.TextSize = 24
-    textLabel.TextCentered = true
-    textLabel.TextWrapped = true
-    textLabel.Parent = hubFrame
-
-    -- 카운트다운 텍스트
-    local countDownLabel = Instance.new("TextLabel")
-    countDownLabel.Size = UDim2.new(1, 0, 0.2, 0)
-    countDownLabel.Position = UDim2.new(0, 0, 0.8, 0)
-    countDownLabel.Text = "3"
-    countDownLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
-    countDownLabel.TextSize = 30
-    countDownLabel.TextCentered = true
-    countDownLabel.Parent = hubFrame
-
-    -- 3초 카운트 및 삭제
-    local count = 3
-    spawn(function()
-        for i = 1, count do
-            countDownLabel.Text = tostring(count - i + 1)
-            wait(1)
-        end
-        screenGui:Destroy()  -- 3초 후 허브 삭제
-    end)
-end
-
--- 모든 플레이어에게 허브 띄우기
-for _, plr in pairs(Players:GetPlayers()) do
-    if plr ~= Players.LocalPlayer then  -- 로컬 플레이어 제외
-        createHub(plr)
-    end
-end
-
-print("모든 플레이어에게 허브를 띄웠습니다.")
+print("https://discord.gg/KFqPnmGBTZ")
         
 end)
