@@ -78,7 +78,7 @@ local LocalPlayer = Players.LocalPlayer
 -- CE_Events 찾기
 local CE_Events
 for i, v in next, getgc(true) do
-    if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'equipEvent') then
+    if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'explosiveEvent') then
         CE_Events = v
         break
     end
@@ -88,30 +88,46 @@ end
 local function makeInvincible()
     if LocalPlayer.Character then
         local humanoid = LocalPlayer.Character:FindFirstChild("Humanoid")
+        local rootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+
         if humanoid then
             humanoid.MaxHealth = math.huge
             humanoid.Health = math.huge
+            humanoid.BreakJointsOnDeath = false -- 죽어도 캐릭터가 부서지지 않도록 설정
+        end
+
+        if rootPart then
+            rootPart.Anchored = true -- 폭발 충격으로 밀려나는 것 방지
         end
     end
 end
 
--- CE_Events로 로컬 플레이어 대미지 무효화
+-- CE_Events로 로컬 플레이어 대미지 & 폭발 무효화
 if CE_Events then
     local oldDamageEvent = CE_Events["damageEvent"]
+    local oldExplosiveEvent = CE_Events["explosiveEvent"]
+
+    -- 대미지 무효화
     CE_Events["damageEvent"] = function(target, damage)
-        if target == LocalPlayer.Character.Humanoid then
+        if target == LocalPlayer.Character:FindFirstChild("Humanoid") then
             return -- 로컬 플레이어에게 들어오는 대미지를 무효화
         else
-            return oldDamageEvent(target, damage) -- 다른 플레이어에게는 정상적으로 대미지 적용
+            return oldDamageEvent(target, damage) -- 다른 플레이어는 정상적으로 대미지 적용
         end
+    end
+
+    -- 폭발 무효화
+    CE_Events["explosiveEvent"] = function(...)
+        print("폭발 이벤트 무효화됨")
+        return -- 폭발 이벤트가 실행되지 않도록 차단
     end
 end
 
 -- 무적 적용
 makeInvincible()
-LocalPlayer.CharacterAdded:Connect(makeInvincible) -- 캐릭터가 리스폰될 때 무적 재적용
+LocalPlayer.CharacterAdded:Connect(makeInvincible) -- 캐릭터 리스폰 시에도 무적 유지
 
-print("로컬 플레이어에게 무적이 적용되었습니다.")
+print("로컬 플레이어에게 완전한 무적이 적용되었습니다.")
         
 end)
 
