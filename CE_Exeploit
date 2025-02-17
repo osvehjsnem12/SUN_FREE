@@ -173,7 +173,7 @@ print("모든 플레이어가 로컬 플레이어의 3 스터디 범위 내로 �
         
 end)
 
-KillingCheats:CreateButton("CE 맵 삭제", function()
+KillingCheats:CreateButton("모든 플레이어 맵밖으로 떨구기", function()
 
         
  local Players = game:GetService("Players")
