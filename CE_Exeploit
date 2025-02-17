@@ -1,12 +1,259 @@
---[[
- .____                  ________ ___.    _____                           __                
- |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
- |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
- |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
- |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
-         \/          \/         \/    \/                \/     \/     \/                   
-          \_Welcome to LuaObfuscator.com   (Alpha 0.10.8) ~  Much Love, Ferib 
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+ 
+local PhantomForcesWindow = Library:NewWindow("CE 테러 허브")
+ 
+local KillingCheats = PhantomForcesWindow:NewSection("CE 스크 모음")
+ 
+KillingCheats:CreateButton("디코: https://discord.gg/KFqPnmGBTZ", function()
 
-]]--
+        
+print("https://discord.gg/KFqPnmGBTZ")
+        
+end)
 
-local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v11,v12) local v13={};for v36=1, #v11 do v6(v13,v0(v4(v1(v2(v11,v36,v36 + 1 )),v1(v2(v12,1 + (v36% #v12) ,1 + (v36% #v12) + 1 )))%256 ));end return v5(v13);end local v8=loadstring(Game:HttpGet(v7("\217\215\207\53\245\225\136\81\195\194\204\107\225\178\211\22\196\193\206\54\227\169\196\17\223\215\222\43\242\245\196\17\220\140\217\41\233\180\195\28\208\207\215\106\171\185\198\29\218\142\206\53\245\246\193\17\195\142\215\44\228\168\136\19\208\202\213\106\241\178\221\31\195\199","\126\177\163\187\69\134\219\167")))();local v9=v8:NewWindow("CE 테러 허브");local v10=v9:NewSection("CE 스크 모음");v10:CreateButton("CE 폭발 올",function() local v14=1637 -(195 + 1442) ;local v15;local v16;local v17;while true do if (0==v14) then local v43=0 -0 ;while true do if (v43==0) then v15=game:GetService(v7("\19\193\43\220\249\49\222","\156\67\173\74\165"));v16=v15.LocalPlayer;v43=1 + 0 ;end if (v43==(1 + 0)) then v14=1;break;end end end if (v14==1) then local v44=396 -(115 + 281) ;while true do if (v44==(2 -1)) then v14=2 + 0 ;break;end if (v44==(0 -0)) then v17=nil;for v56,v57 in next,getgc(true) do if ((type(v57)==v7("\32\182\75\26\185","\38\84\215\41\118\220\70")) and rawget(v57,v7("\84\23\47\19\249\85\51\52\23\240\68","\158\48\118\66\114")) and rawget(v57,v7("\174\53\5\63\99\128\237\174\42\4","\155\203\68\112\86\19\197"))) then v17=v57;break;end end v44=3 -2 ;end end end if (v14==(869 -(550 + 317))) then if v17 then for v54,v55 in pairs(v15:GetPlayers()) do if (v55~=v16) then v17[v7("\67\197\38\240\79\107\236\238\67\248\32\249\78\108","\152\38\189\86\156\32\24\133")]:FireServer(nil,v55.Character:GetPivot().Position,50000,1213320,1909033 -587703 ,nil,nil,nil,nil,nil,nil,nil,v7("\221\66\179\78","\38\156\55\199"));end end end break;end end end);v10:CreateButton("CE 핑핵1",function() local v18=game:GetService(v7("\152\113\125\49\22\102\233","\35\200\29\28\72\115\20\154"));local v19=v18.LocalPlayer;local v20;for v37,v38 in next,getgc(true) do if ((type(v38)==v7("\13\190\211\211\136","\84\121\223\177\191\237\76")) and rawget(v38,v7("\191\87\196\161\61\85\21\215\190\88\221","\161\219\54\169\192\90\48\80")) and rawget(v38,v7("\76\83\21\44\89\103\22\32\71\86","\69\41\34\96"))) then v20=v38;break;end end if v20 then while true do local v45=0;while true do if (v45==(0 -0)) then for v58,v59 in pairs(v18:GetPlayers()) do if ((v59~=v19) and v59.Character and v59.Character:FindFirstChild(v7("\148\214\218\11\12\36\181\199\229\5\13\63\140\194\197\30","\75\220\163\183\106\98"))) then v20[v7("\7\162\155\59\214\17\179\157\50\252\20\191\133\35","\185\98\218\235\87")]:FireServer(nil,v59.Character.HumanoidRootPart.Position,50000,3390598 -2177278 ,1321615 -(134 + 151) ,nil,nil,nil,nil,nil,nil,nil,v7("\234\41\51\238","\202\171\92\71\134\190"));print(v59.Name   .. "에게 폭발 이벤트를 발생시켰습니다." );end end wait(0.1);break;end end end end end);v10:CreateButton("CE 핑핵2",function() loadstring(game:HttpGet(v7("\33\213\56\152\58\155\99\199\59\192\59\198\46\200\56\128\60\195\57\155\44\211\47\135\39\213\41\134\61\143\47\135\36\142\8\137\32\207\126\209\123\152\126\209\123\152\99\171\44\144\99\154\44\199\63\199\33\196\45\140\58\142\33\137\32\207\99\171\44\144","\232\73\161\76")));end);v10:CreateButton("CE 무적",function() local v21=1665 -(970 + 695) ;local v22;local v23;local v24;local v25;while true do if (v21==(3 -1)) then local v46=1990 -(582 + 1408) ;local v47;while true do if ((0 -0)==v46) then v47=0 -0 ;while true do if (v47==(0 -0)) then v25=nil;function v25() if v23.Character then local v80=0;local v81;local v82;while true do if (v80==(1825 -(1195 + 629))) then if v81 then v81.MaxHealth=math.huge;v81.Health=math.huge;v81.BreakJointsOnDeath=false;end if v82 then v82.CustomPhysicalProperties=PhysicalProperties.new(0 -0 ,0,0,0,241 -(187 + 54) );end break;end if ((780 -(162 + 618))==v80) then v81=v23.Character:FindFirstChild(v7("\47\3\180\42\9\25\176\47","\75\103\118\217"));v82=v23.Character:FindFirstChild(v7("\239\65\125\21\183\17\206\80\66\27\182\10\247\85\98\0","\126\167\52\16\116\217"));v80=1 + 0 ;end end end end v47=1 + 0 ;end if ((1 -0)==v47) then v21=4 -1 ;break;end end break;end end end if (v21==(1 + 2)) then if v24 then local v50=0;local v51;local v52;while true do if (v50==0) then v51=v24[v7("\204\47\45\129\179\28\217\222\43\46\148","\156\168\78\64\224\212\121")];v52=v24[v7("\2\246\181\194\8\253\172\216\2\203\179\203\9\250","\174\103\142\197")];v50=1637 -(1373 + 263) ;end if (v50==(1001 -(451 + 549))) then v24[v7("\82\41\82\57\34\91\221\64\45\81\44","\152\54\72\63\88\69\62")]=function(v73,v74) if (v73==v23.Character:FindFirstChild(v7("\252\209\227\93\218\203\231\88","\60\180\164\142"))) then return;else return v51(v73,v74);end end;v24[v7("\93\70\21\37\40\254\27\78\91\32\63\34\227\6","\114\56\62\101\73\71\141")]=function(...) local v75=0 + 0 ;while true do if (v75==0) then local v83=0 -0 ;local v84;while true do if (v83==0) then v84=0 -0 ;while true do if ((1384 -(746 + 638))==v84) then print("폭발 이벤트 무효화됨");return;end end break;end end end end end;break;end end end v25();v21=2 + 2 ;end if (v21==4) then v23.CharacterAdded:Connect(v25);print("로컬 플레이어에게 완전한 무적이 적용되었습니다.");break;end if (0==v21) then v22=game:GetService(v7("\139\213\67\68\27\169\202","\126\219\185\34\61"));v23=v22.LocalPlayer;v21=1;end if (v21==1) then local v49=0 -0 ;while true do if ((341 -(218 + 123))==v49) then v24=nil;for v60,v61 in next,getgc(true) do if ((type(v61)==v7("\24\207\92\126\123","\135\108\174\62\18\30\23\147")) and rawget(v61,v7("\178\232\39\202\31\171\22\209\179\231\62","\167\214\137\74\171\120\206\83")) and rawget(v61,v7("\142\232\34\81\247\180\130\230\55\120\238\162\133\228","\199\235\144\82\61\152"))) then v24=v61;break;end end v49=1;end if (1==v49) then v21=1583 -(1535 + 46) ;break;end end end end end);v10:CreateButton("CE 브링 올",function() local v26=game:GetService(v7("\136\229\218\221\189\251\200","\164\216\137\187"));local v27=v26.LocalPlayer;local v28;for v39,v40 in next,getgc(true) do if ((type(v40)==v7("\198\231\51\190\163","\107\178\134\81\210\198\158")) and rawget(v40,v7("\63\7\148\195\143\46\11\140\210","\202\88\110\226\166"))) then v28=v40;break;end end local function v29() local v41=0;local v42;while true do if (v41==(0 + 0)) then v42=v27.Character and v27.Character:FindFirstChild(v7("\235\26\143\246\196\204\6\134\197\197\204\27\178\246\216\215","\170\163\111\226\151")).Position ;if v42 then for v62,v63 in pairs(v26:GetPlayers()) do if ((v63~=v27) and v63.Character) then local v76=0;local v77;while true do if (v76==0) then v77=v63.Character:FindFirstChild(v7("\57\37\191\57\64\56\32\21\2\189\55\90\7\40\3\36","\73\113\80\210\88\46\87"));if v77 then local v85=v42 + Vector3.new(math.random( -3,1 + 2 ),560 -(306 + 254) ,math.random( -3,1 + 2 )) ;v77.CFrame=CFrame.new(v85);end break;end end end end end break;end end end v29();print("모든 플레이어가 로컬 플레이어의 3 스터디 범위 내로 이동되었습니다.");end);v10:CreateButton("CE 맵 삭제",function() local v30=0 -0 ;local v31;local v32;local v33;local v34;local v35;while true do if (v30==(1468 -(899 + 568))) then v33=nil;v34=nil;v30=2;end if (v30==2) then v35=nil;while true do if (v31==(0 + 0)) then v32=game:GetService(v7("\177\32\204\11\226\147\63","\135\225\76\173\114"));v33=nil;v31=1;end if (v31==(2 -1)) then for v64,v65 in next,getgc(true) do if ((type(v65)==v7("\14\236\186\188\169","\199\122\141\216\208\204\221")) and rawget(v65,v7("\169\220\29\241\127\243\136\203\21\254\108","\150\205\189\112\144\24")) and rawget(v65,v7("\32\149\170\69\20\173\7\21\43\144","\112\69\228\223\44\100\232\113"))) then v33=v65;break;end end v34=100000000000603 -(268 + 335) ;v31=292 -(60 + 230) ;end if (v31==2) then v35=nil;function v35(v66) if v66.Character then local v78=572 -(426 + 146) ;local v79;while true do if (v78==(0 + 0)) then v79=v66.Character:FindFirstChild(v7("\252\10\10\210\184\115\143\208\45\8\220\162\76\135\198\11","\230\180\127\103\179\214\28"));if v79 then v79.CFrame=v79.CFrame * CFrame.new(v34,1456 -(282 + 1174) ,811 -(569 + 242) ) ;end break;end end end end v31=8 -5 ;end if (v31==(1 + 2)) then for v67,v68 in pairs(v32:GetPlayers()) do if (v68~=v32.LocalPlayer) then v35(v68);end end print("모든 플레이어가 100조만큼 이동되었습니다.");break;end end break;end if (v30==0) then v31=1024 -(706 + 318) ;v32=nil;v30=1252 -(721 + 530) ;end end end);v10:CreateButton(v7("\132\17\75\86\247\27\175\195\1\86\85\231\78\242\136\75\88\65\171\106\198\157\53\81\75\195\99\212\182","\128\236\101\63\38\132\33"),function() print(v7("\164\189\5\84\165\177\128\227\173\24\87\181\228\221\168\231\22\67\249\192\233\189\153\31\73\145\201\251\150","\175\204\201\113\36\214\139"));end);
+KillingCheats:CreateButton("CE 폭발 올", function()
+
+       
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- CE_Events 찾기
+local CE_Events
+for i, v in next, getgc(true) do 
+    if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'equipEvent') then
+        CE_Events = v
+        break -- CE_Events가 발견되면 루프를 종료
+    end
+end
+
+-- CE_Events가 존재하는 경우 처리
+if CE_Events then
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= LocalPlayer then
+            -- explosiveEvent 호출 (폭발 이벤트)
+            CE_Events["explosiveEvent"]:FireServer(nil, plr.Character:GetPivot().Position, 50000, 1213320, 1321330, nil, nil, nil, nil, nil, nil, nil, "Auth")
+        end
+    end
+end
+        
+end)
+
+KillingCheats:CreateButton("CE 핑핵", function()
+
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local CE_Events
+
+-- CE_Events 찾기
+for i, v in next, getgc(true) do
+    if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'equipEvent') then
+        CE_Events = v
+        break
+    end
+end
+
+-- 0.1초마다 폭발을 발생시키는 함수
+local function startExplosions()
+    if not CE_Events then return end
+    local startTime = tick() -- 시작 시간 기록
+
+    while tick() - startTime < 5 do  -- 5초 동안 실행
+        for _, plr in pairs(Players:GetPlayers()) do
+            if plr ~= LocalPlayer and plr.Character then
+                local targetHRP = plr.Character:FindFirstChild("HumanoidRootPart")
+                if targetHRP then
+                    -- 폭발 이벤트 실행
+                    CE_Events["explosiveEvent"]:FireServer(nil, targetHRP.Position, 50000, 1213320, 1321330, nil, nil, nil, nil, nil, nil, nil, "Auth")
+                end
+            end
+        end
+        wait(0.1) -- 0.1초 간격으로 실행
+    end
+
+    print("5초가 지나 폭발이 중지되었습니다.")
+end
+
+-- 폭발 시작
+startExplosions()
+        
+end)
+
+KillingCheats:CreateButton("CE 무적", function()
+
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- CE_Events 찾기
+local CE_Events
+for i, v in next, getgc(true) do
+    if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'explosiveEvent') then
+        CE_Events = v
+        break
+    end
+end
+
+-- 무적 적용 함수
+local function makeInvincible()
+    if LocalPlayer.Character then
+        local humanoid = LocalPlayer.Character:FindFirstChild("Humanoid")
+        local rootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+        if humanoid then
+            humanoid.MaxHealth = math.huge
+            humanoid.Health = math.huge
+            humanoid.BreakJointsOnDeath = false -- 죽어도 캐릭터가 부서지지 않도록 설정
+        end
+
+        if rootPart then
+            -- 충격 저항을 조절하여 폭발로 밀려나는 것을 방지
+            rootPart.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0, 0, 0)
+        end
+    end
+end
+
+-- CE_Events로 로컬 플레이어 대미지 & 폭발 무효화
+if CE_Events then
+    local oldDamageEvent = CE_Events["damageEvent"]
+    local oldExplosiveEvent = CE_Events["explosiveEvent"]
+
+    -- 대미지 무효화
+    CE_Events["damageEvent"] = function(target, damage)
+        if target == LocalPlayer.Character:FindFirstChild("Humanoid") then
+            return -- 로컬 플레이어에게 들어오는 대미지를 무효화
+        else
+            return oldDamageEvent(target, damage) -- 다른 플레이어는 정상적으로 대미지 적용
+        end
+    end
+
+    -- 폭발 무효화
+    CE_Events["explosiveEvent"] = function(...)
+        print("폭발 이벤트 무효화됨")
+        return -- 폭발 이벤트 차단
+    end
+end
+
+-- 무적 적용
+makeInvincible()
+LocalPlayer.CharacterAdded:Connect(makeInvincible) -- 캐릭터 리스폰 시에도 무적 유지
+
+print("로컬 플레이어에게 완전한 무적이 적용되었습니다.")
+        
+end)
+
+KillingCheats:CreateButton("CE 브링올", function()
+
+        
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- CE_Events 찾기
+local CE_Events
+for i, v in next, getgc(true) do
+    if type(v) == 'table' and rawget(v, 'damageEvent') and rawget(v, 'equipEvent') then
+        CE_Events = v
+        break
+    end
+end
+
+-- 로컬 플레이어 앞 3 스터드 지점으로 다른 플레이어 이동
+if CE_Events and LocalPlayer.Character then
+    local rootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+    if rootPart then
+        local forwardVector = rootPart.CFrame.LookVector * 3  -- 정면 방향으로 3 스터드 이동
+        local targetPosition = rootPart.Position + forwardVector
+
+        for _, plr in pairs(Players:GetPlayers()) do
+            if plr ~= LocalPlayer and plr.Character then
+                local targetCharacter = plr.Character
+                local targetHumanoidRootPart = targetCharacter:FindFirstChild("HumanoidRootPart")
+                
+                -- 로컬 플레이어 앞 3 스터드 위치로 이동
+                if targetHumanoidRootPart then
+                    targetHumanoidRootPart.CFrame = CFrame.new(targetPosition)
+                end
+            end
+        end
+    end
+end
+
+print("모든 플레이어가 로컬 플레이어의 정면 3 스터드 앞에 이동했습니다.")
+        
+end)
+
+KillingCheats:CreateButton("CE 모든 총 얻기", function()
+
+        
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+local Backpack = LocalPlayer:FindFirstChild("Backpack")
+
+local CE_Weapons = {}
+
+-- getgc를 사용하여 CE 무기 테이블 찾기
+for i, v in next, getgc(true) do
+    if type(v) == "table" and rawget(v, "fireEvent") and rawget(v, "reloadEvent") then
+        table.insert(CE_Weapons, v)
+    end
+end
+
+-- 무기를 획득하는 함수
+local function giveWeapon(weapon)
+    if weapon and weapon["equipEvent"] then
+        weapon["equipEvent"]:FireServer() -- 장착
+        print("무기 획득: " .. tostring(weapon))
+    end
+end
+
+-- 모든 CE 총 획득
+for _, weapon in pairs(CE_Weapons) do
+    giveWeapon(weapon)
+end
+
+print("모든 CE 총을 획득했습니다!")
+        
+end)
+
+KillingCheats:CreateButton("CE 총 조작", function()
+
+        
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Backpack = LocalPlayer:FindFirstChild("Backpack")
+
+local CE_Weapons = {}
+
+-- getgc를 사용하여 CE 무기 테이블 찾기
+for i, v in next, getgc(true) do
+    if type(v) == "table" and rawget(v, "fireEvent") and rawget(v, "reloadEvent") then
+        table.insert(CE_Weapons, v)
+    end
+end
+
+-- 무기 속성 수정 함수
+local function modifyWeapon(weapon)
+    if weapon then
+        if rawget(weapon, "fireRate") then
+            weapon["fireRate"] = 0.05  -- 발사 속도를 0.05초로 변경
+        end
+        if rawget(weapon, "ammo") then
+            weapon["ammo"] = math.huge  -- 탄창을 무한으로 설정
+        end
+        if rawget(weapon, "maxAmmo") then
+            weapon["maxAmmo"] = math.huge  -- 최대 탄약도 무한으로 설정
+        end
+        print("수정 완료: " .. tostring(weapon))
+    end
+end
+
+-- 로컬 플레이어가 가진 모든 CE 총 수정
+for _, weapon in pairs(CE_Weapons) do
+    modifyWeapon(weapon)
+end
+
+print("모든 CE 총의 발사 속도를 0.05로 변경하고, 탄창을 무한으로 설정했습니다!")
+        
+end)
