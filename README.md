@@ -1428,7 +1428,9 @@ local function CE_EX_Select_KILL()
 	end
 end
 
-
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Dain29292929/Ce1/refs/heads/main/Ce1"))()
+()
+end
 ----------------------- ACS CE -----------------------------
 ---------------------- 부대게임, 팽부대 시작 ------------------------------
 -- 팽 부대
@@ -2190,11 +2192,19 @@ local Button_ACS_Block = Tab2:CreateButton({
 		CEsetup()
 	end
 })
-
 local Button_ACS_Click_KILL = Tab2:CreateToggle({
 	Name = "CE 클릭폭발",
 	CurrentValue = false,
 	Flag = "Toggle",
+	Callback = function(Value)
+		if Value then
+			setupMouseClickHandler()
+		else
+			cancelMouseEvents()
+		end
+		showMessage("CE_Click : " .. tostring(Value))
+	end,
+})
 	Callback = function(Value)
 		if Value then
 			setupMouseClickHandler()
@@ -2213,11 +2223,19 @@ local Button_CE_ALL_KILL = Tab2:CreateButton({
 	end
 })
 
-local Button_CE_Ex_ALL_KILL = Tab2:CreateButton({
-	Name = "CE 폭발 ALL KILL",
+local Button_CE_EX_ALL_KILL = Tab2:CreateButton({
+	Name = "CE EX ALL KILL",
 	Callback = function()
-		CE_EX_ALL_KILL()
-		showMessage("CE_Ex_AllKill")
+		CEEXKill_ALL()
+		showMessage("CE_EX_ALL Kill")
+	end
+})
+
+local Button_CE_ping_hack = Tab2:CreateButton({
+	Name = "CE 핑핵",
+	Callback = function()
+		CE_ping_hack()
+		showMessage("CE_ping_hack")
 	end
 })
 
