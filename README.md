@@ -2201,16 +2201,7 @@ local Button_ACS_Click_KILL = Tab2:CreateToggle({
 		showMessage("CE_Click : " .. tostring(Value))
 	end,
 })
-	Callback = function(Value)
-		if Value then
-			setupMouseClickHandler()
-		else
-			cancelMouseEvents()
-		end
-		showMessage("CE_Click : " .. tostring(Value))
-	end,
-})
-
+	
 local Button_CE_ALL_KILL = Tab2:CreateButton({
 	Name = "CE ALL KILL",
 	Callback = function()
