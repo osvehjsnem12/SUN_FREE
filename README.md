@@ -2244,7 +2244,7 @@ local Button_CE_PING_HACK = Tab2:CreateButton({
     Name = "CE PING HACK",
     Callback = function()
         local success, err = pcall(function()
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/Himynamefake/eqw/refs/heads/main/JayThePrime'))()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/Dain29292929/Ce1/refs/heads/main/Ce1'))()
         end)
 
         if success then
