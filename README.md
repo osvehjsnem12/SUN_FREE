@@ -2414,29 +2414,29 @@ local Button_Sak_ALL_Cuff = Tab3:CreateButton({
 })
 
 ---------------------- 스크립트 모음 탭 4 ------------------------
-local Tab4 = Window:CreateTab("스크립트 모음") -- 'Tab' 변수에 새 탭을 생성
+local Tab4 = Window:CreateTab("외부 허브") -- 'Tab' 변수에 새 탭을 생성
 
 -- 섹션 1: 스크립트
 local Section4_1 = Tab4:CreateSection("스크립트")
 
 local Button_script_Debugger = Tab4:CreateButton({
-	Name = "Debugger Script",
-	Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/debugnation/main/decompilers%20and%20debugging/Debuggers.txt"))() end-- 함수 채우기
+	Name = "사이틱 허브",
+	Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/osvehjsnem12/SYTIC_HUB/refs/heads/main/SYTIC_HUB"))() end-- 함수 채우기
 })
 
 local Button_script_Debugger = Tab4:CreateButton({
-	Name = "Debugger Script",
-	Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/debugnation/main/decompilers%20and%20debugging/Debuggers.txt"))() end-- 함수 채우기
+	Name = "J 허브",
+	Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Himynamefake/eqw/refs/heads/main/JayThePrime"))() end-- 함수 채우기
 })
 
 local Button_script_Debugger = Tab4:CreateButton({
-	Name = "Debugger Script",
-	Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/debugnation/main/decompilers%20and%20debugging/Debuggers.txt"))() end-- 함수 채우기
+	Name = "플라워 허브",
+	Callback = function() loadstring(game:HttpGet("https://pastebin.com/raw/hcuVUteB"))() end-- 함수 채우기
 })
 
 local Button_script_Debugger = Tab4:CreateButton({
-	Name = "Debugger Script",
-	Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/debugnation/main/decompilers%20and%20debugging/Debuggers.txt"))() end -- 함수 채우기
+	Name = "여러 스크 모음 허브",
+	Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub"))() end -- 함수 채우기
 })
 
 local Button_script_Debugger = Tab4:CreateButton({
