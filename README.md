@@ -2211,11 +2211,11 @@ local Button_CE_ALL_KILL = Tab2:CreateButton({
 	end
 })
 
-local Button_CE_EX_ALL_KILL = Tab2:CreateButton({
-	Name = "CE EX ALL KILL",
+local Button_CE_Ex_ALL_KILL = Tab2:CreateButton({
+	Name = "CE 폭발 ALL KILL",
 	Callback = function()
-		CEEXKill_ALL()
-		showMessage("CE_EX_ALL Kill")
+		CE_EX_ALL_KILL()
+		showMessage("CE_Ex_AllKill")
 	end
 })
 
