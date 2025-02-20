@@ -2283,8 +2283,8 @@ Tab11:CreateButton({
 ---------------------- 부대 스크립트 모음 탭 3 ------------------------
 local Tab3 = Window:CreateTab("부대 스크립트 모음") -- 'Tab' 변수에 새 탭을 생성
 
--- 섹션 1: 랭부대
-local Section3_1 = Tab3:CreateSection("랭 부대")
+-- 섹션 1: 팽, 랜 부대
+local Section3_1 = Tab3:CreateSection("팽, 랜 부대")
 
 local Button_Lang_ALL_Cuff = Tab3:CreateButton({
 	Name = "ALL Cuff",
@@ -2440,8 +2440,8 @@ local Button_script_Debugger = Tab4:CreateButton({
 })
 
 local Button_script_Debugger = Tab4:CreateButton({
-	Name = "Debugger Script",
-	Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/debugnation/main/decompilers%20and%20debugging/Debuggers.txt"))() end -- 함수 채우기
+	Name = "여러 스크 모음 허브2",
+	Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/siwon2da/siwon2dac/refs/heads/main/v6"))() end -- 함수 채우기
 })
 
 ArrayField:LoadConfiguration()
