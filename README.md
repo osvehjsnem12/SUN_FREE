@@ -1427,10 +1427,6 @@ local function CE_EX_Select_KILL()
 		end
 	end
 end
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Dain29292929/Ce1/refs/heads/main/Ce1"))()
-()
-end
 ----------------------- ACS CE -----------------------------
 ---------------------- 부대게임, 팽부대 시작 ------------------------------
 -- 팽 부대
@@ -2228,14 +2224,6 @@ local Button_CE_EX_ALL_KILL = Tab2:CreateButton({
 	Callback = function()
 		CEEXKill_ALL()
 		showMessage("CE_EX_ALL Kill")
-	end
-})
-
-local Button_CE_ping_hack = Tab2:CreateButton({
-	Name = "CE 핑핵",
-	Callback = function()
-		CE_ping_hack()
-		showMessage("CE_ping_hack")
 	end
 })
 
