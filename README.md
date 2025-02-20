@@ -1426,7 +1426,6 @@ local function CE_EX_Select_KILL()
 			wait(3)
 		end
 	end
- loadstring(game:HttpGet('https://raw.githubusercontent.com/Himynamefake/eqw/refs/heads/main/JayThePrime'))()
 end
 ----------------------- ACS CE -----------------------------
 ---------------------- 부대게임, 팽부대 시작 ------------------------------
@@ -2240,12 +2239,20 @@ local Input_peng_Cuff_Name = Tab2:CreateInput({
 		CE_EX_target = findPlayerDisplayName(text) -- 입력받는 텍스트 사용
 	end
 })
+
 local Button_CE_PING_HACK = Tab2:CreateButton({
-	Name = "CE PING HACK",
-	Callback = function()
-		CEPINGHACK()
-		showMessage("CE_PING_HACK")
-	end
+    Name = "CE PING HACK",
+    Callback = function()
+        local success, err = pcall(function()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/Himynamefake/eqw/refs/heads/main/JayThePrime'))()
+        end)
+
+        if success then
+            showMessage("CE_PING_HACK 실행 완료")
+        else
+            showMessage("CE_PING_HACK 실행 오류: " .. tostring(err))
+        end
+    end
 })
 
 ---- 프리즌 라이프, 에임봇 ----
