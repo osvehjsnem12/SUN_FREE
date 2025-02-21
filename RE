@@ -2166,7 +2166,7 @@ local Button_ACS_ALL_KILL = Tab2:CreateButton({
 })
 
 local Button_ACS_ALL_KILL = Tab2:CreateButton({
-	Name = "ACS Select Kill (개발중)",
+	Name = "ACS Select Kill",
 	Callback = function()
 	end
 })
@@ -2415,10 +2415,10 @@ local Button_tebi_jak_vote = Tab3:CreateButton({
 	end-- 함수 채우기
 })
 
--- 섹션 4: 샤크부대
-local Section3_4 = Tab3:CreateSection("샤크 부대")
+-- 섹션 4: 표범부대
+local Section3_4 = Tab3:CreateSection("표범부대")
 
-local Button_Sak_ALL_Cuff = Tab3:CreateButton({
+local Button_Leopard_ALL_Cuff = Tab3:CreateButton({
 	Name = "ALL Cuff",
 	Callback = function() cuffAllPlayersa() 
 		showMessage("ALL Cuff")
