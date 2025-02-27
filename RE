@@ -816,9 +816,9 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
 local espEnabled = false
-local espObjects = {} -- 생성된 ESP 오브젝트 저장
+local espObjects = {} -- 생성된 ESP 저장
 
--- ESP 적용 함수
+-- 🟢 ESP 적용 함수
 local function applyESP(player)
     if not player.Character then return end
     if espObjects[player] then return end -- 이미 적용된 플레이어는 건너뜀
@@ -843,35 +843,41 @@ local function applyESP(player)
     end)
 end
 
--- ESP 제거 함수
+-- 🔴 ESP 제거 함수
 local function removeESP()
     for player, highlight in pairs(espObjects) do
         if highlight then
             highlight:Destroy()
         end
     end
-    espObjects = {}
+    espObjects = {} -- 테이블 초기화
 end
 
 -- 플레이어 추가 시 ESP 적용
 local function onPlayerAdded(player)
-    player.CharacterAdded:Connect(function()
+    -- 플레이어가 부활할 때마다 ESP 적용
+    local function onCharacterAdded(character)
         if espEnabled then
+            task.wait(0.1) -- 캐릭터가 완전히 로드될 때까지 잠깐 대기
             applyESP(player)
         end
-    end)
+    end
 
-    if player.Character and espEnabled then
-        applyESP(player)
+    -- 플레이어가 처음 게임에 들어왔을 때 적용
+    player.CharacterAdded:Connect(onCharacterAdded)
+
+    -- 플레이어가 이미 캐릭터를 가지고 있으면 적용
+    if player.Character then
+        onCharacterAdded(player.Character)
     end
 end
 
--- 기존 플레이어에 대한 ESP 적용
+-- ✅ 기존 플레이어들에게도 ESP 적용
 for _, player in ipairs(Players:GetPlayers()) do
     onPlayerAdded(player)
 end
 
--- 새로운 플레이어가 추가되면 ESP 적용
+-- ✅ 새로운 플레이어가 추가되면 자동 적용
 Players.PlayerAdded:Connect(onPlayerAdded)
 ---------------------- ESP 기능 --------------------------
 ---------------------- FLY 기능 --------------------------
@@ -1808,7 +1814,6 @@ local Toggle_Spin = Tab:CreateToggle({
 	end,
 })
 
--- Rayfield UI 토글 버튼
 Toggle_ESP = Tab:CreateToggle({
     Name = "ESP",
     CurrentValue = false,
@@ -1818,7 +1823,7 @@ Toggle_ESP = Tab:CreateToggle({
         espEnabled = Value
 
         if espEnabled then
-            for _, player in ipairs(Players:GetPlayers()) do
+            for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
                 applyESP(player)
             end
         else
