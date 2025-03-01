@@ -881,56 +881,86 @@ end
 Players.PlayerAdded:Connect(onPlayerAdded)
 ---------------------- ESP 기능 --------------------------
 ---------------------- FLY 기능 --------------------------
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local UIS = game:GetService("UserInputService")
+local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
 
-local flying = false
-local flySpeed = 10  -- 기본 속도
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rootPart = character:WaitForChild("HumanoidRootPart")
+local humanoid = character:WaitForChild("Humanoid")
 
--- 플라이 시작 함수
-local function startFlying()
-    if flying then return end
-    flying = true
+local flySpeed = 5 -- 기본 속도
+local isFlying = false
 
-    character.Humanoid.PlatformStand = true
+local bodyGyro = Instance.new("BodyGyro")
+local bodyVelocity = Instance.new("BodyVelocity")
 
-    -- 비행 구현을 위한 BodyVelocity와 BodyGyro 추가
-    local bodyVelocity = Instance.new("BodyVelocity")
-    bodyVelocity.MaxForce = Vector3.new(400000, 400000, 400000)
-    bodyVelocity.Velocity = Vector3.zero
-    bodyVelocity.Parent = humanoidRootPart
+bodyGyro.P = 9e4
+bodyGyro.MaxTorque = Vector3.new(9e4, 9e4, 9e4)
+bodyGyro.CFrame = rootPart.CFrame
 
-    local bodyGyro = Instance.new("BodyGyro")
-    bodyGyro.MaxTorque = Vector3.new(400000, 400000, 400000)
-    bodyGyro.P = 30000
-    bodyGyro.CFrame = humanoidRootPart.CFrame
-    bodyGyro.Parent = humanoidRootPart
+bodyVelocity.Velocity = Vector3.zero
+bodyVelocity.MaxForce = Vector3.new(9e4, 9e4, 9e4)
 
-    -- 비행 중 방향 업데이트
-    local function updateFly()
-        while flying do
-            task.wait()
-            local cam = workspace.CurrentCamera
+-- 비행 시작 함수
+function startFlying()
+    if isFlying then return end
+    isFlying = true
 
-            -- 카메라 방향 기준으로 이동
-            local forward = cam.CFrame.LookVector
-            bodyVelocity.Velocity = forward * flySpeed
-            bodyGyro.CFrame = cam.CFrame
+    bodyGyro.Parent = rootPart
+    bodyVelocity.Parent = rootPart
+    humanoid.PlatformStand = true
+
+    RunService.RenderStepped:Connect(function()
+        if not isFlying then return end
+        bodyGyro.CFrame = workspace.CurrentCamera.CFrame
+        local moveVector = Vector3.zero
+
+        if UserInputService.TouchEnabled then
+            local moveDir = humanoid.MoveDirection
+            if moveDir.Magnitude > 0 then
+                moveVector = moveDir * flySpeed
+                local cameraLook = workspace.CurrentCamera.CFrame.LookVector
+                moveVector = moveVector + Vector3.new(0, cameraLook.Y * flySpeed, 0)
+            end
+        else
+            if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+                moveVector = moveVector + (workspace.CurrentCamera.CFrame.LookVector * flySpeed)
+            end
+            if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+                moveVector = moveVector - (workspace.CurrentCamera.CFrame.LookVector * flySpeed)
+            end
+            if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+                moveVector = moveVector - (workspace.CurrentCamera.CFrame.RightVector * flySpeed)
+            end
+            if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+                moveVector = moveVector + (workspace.CurrentCamera.CFrame.RightVector * flySpeed)
+            end
+            if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+                moveVector = moveVector + Vector3.new(0, flySpeed, 0)
+            end
+            if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
+                moveVector = moveVector - Vector3.new(0, flySpeed, 0)
+            end
         end
-    end
-    task.spawn(updateFly)
+
+        bodyVelocity.Velocity = moveVector
+    end)
 end
 
--- 플라이 종료 함수
-local function stopFlying()
-    if not flying then return end
-    flying = false
+-- 비행 중지 함수
+function stopFlying()
+    isFlying = false
+    bodyGyro.Parent = nil
+    bodyVelocity.Parent = nil
+    humanoid.PlatformStand = false
+end
 
-    character.Humanoid.PlatformStand = false
+-- 비행 속도 변경 함수
+function changeFlySpeed(value)
+    flySpeed = value
+    showMessage("Speed : " .. tostring(value))
 end
 ---------------------- FLY 기능 ------------------------------
 ---------------------- Noclip 기능 ------------------------------
@@ -1776,18 +1806,17 @@ local Tab = Window:CreateTab("Standerd Cheat") -- 'Tab' 변수에 새 탭을 생
 local Section1_1 = Tab:CreateSection("Cheat")
 
 local Toggle_Fly = Tab:CreateToggle({
-	Name = "Fly",
-	CurrentValue = false,
-	Flag = "Toggle",
-	Callback = function(Value)
-		if Value then
-			showMessage("Fly :" .. tostring(Value))
-			startFlying()-- 비행 활성화 코드
-		else
-			showMessage("Fly :" .. tostring(Value))
-			stopFlying()-- 비행 비활성화 코드
-		end
-	end,
+    Name = "Fly",
+    CurrentValue = false,
+    Flag = "Toggle",
+    Callback = function(Value)
+        showMessage("Fly : " .. tostring(Value))
+        if Value then
+            startFlying() -- 비행 시작
+        else
+            stopFlying() -- 비행 중지
+        end
+    end,
 })
 
 local Toggle_Noclip = Tab:CreateToggle({
@@ -1859,15 +1888,14 @@ local Input_Fling_User = Tab:CreateInput({
 local Section1_2 = Tab:CreateSection("Control")
 
 local Input_FlySpeed = Tab:CreateSlider({
-	Name = "Fly Speed",
-	Range = {0, 20},
-	Increment = 1,
-	Suffix = "%",
-	CurrentValue = 5,
-	Callback = function(value)
-		showMessage("Speed : ".. tostring(value))
-		flySpeed = value-- Fly speed 변경 코드
-	end
+    Name = "Fly Speed",
+    Range = {0, 20},
+    Increment = 1,
+    Suffix = "%",
+    CurrentValue = 5,
+    Callback = function(value)
+        changeFlySpeed(value) -- 비행 속도 변경
+    end
 })
 
 local Input_SpinSpeed = Tab:CreateSlider({
