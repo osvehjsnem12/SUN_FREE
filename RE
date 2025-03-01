@@ -957,10 +957,11 @@ function stopFlying()
     humanoid.PlatformStand = false
 end
 
--- 플라이 속도 조정
+-- 플라이 속도 변경
 local function changeFlySpeed(value)
     flySpeed = value
-    showMessage("Speed : " .. tostring(value))
+    -- speed 변경 후 출력
+    print("Fly Speed: " .. tostring(flySpeed))
 end
 ---------------------- FLY 기능 ------------------------------
 ---------------------- Noclip 기능 ------------------------------
