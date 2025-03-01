@@ -957,8 +957,8 @@ function stopFlying()
     humanoid.PlatformStand = false
 end
 
--- 비행 속도 변경 함수
-function changeFlySpeed(value)
+-- 플라이 속도 조정
+local function changeFlySpeed(value)
     flySpeed = value
     showMessage("Speed : " .. tostring(value))
 end
@@ -1894,7 +1894,7 @@ local Input_FlySpeed = Tab:CreateSlider({
     Suffix = "%",
     CurrentValue = 5,
     Callback = function(value)
-        changeFlySpeed(value) -- 비행 속도 변경
+        changeFlySpeed(value) -- 플라이 속도 변경
     end
 })
 
