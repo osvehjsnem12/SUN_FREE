@@ -47,7 +47,6 @@ local dragInput, mousePos, framePos
 local teleporting = false
 local isFlying = false
 local spinSpeed = 2
-local flySpeed = 2
 local spinning = false
 local noclip = false
 local userName = ""
@@ -56,7 +55,6 @@ local espObjects = {}
 
 -- 기능 플래그
 local CurrentValue = false
-local flyEnabled = false
 local noclipEnabled = false
 local spinEnabled = false
 local KillAuraEnabled = false
@@ -153,217 +151,9 @@ local function gangchulUnCuff()
 end
 
 ------------------------ 프리즌 라이프 -------------------------------
-local function Kick_Server()
-	-- AK-47 아이템을 workspace에서 찾음
-	local akItem = workspace[game.Players.LocalPlayer.Name]:FindFirstChild("AK-47")
-	if not akItem then
-		warn("AK-47 not found in workspace")
-		return
-	end
-
-	local gunStatesModule = akItem:FindFirstChild("GunStates")
-	if not gunStatesModule then
-		warn("GunStates ModuleScript not found in AK-47")
-		return
-	end
-
-	-- GunStates 모듈스크립트에서 반환된 테이블 수정
-	local gunStates = require(gunStatesModule)
-	gunStates.Damage = 1000
-	gunStates.Description = "Remember to put a description here BEFORE the game is published -Me"
-	gunStates.MaxAmmo = 100000000
-	gunStates.CurrentAmmo = 10000000
-	gunStates.StoredAmmo = 600
-	gunStates.FireRate = 0.00000001
-	gunStates.AutoFire = true
-	gunStates.Range = 100000000
-	gunStates.Spread = 14
-	gunStates.ReloadTime = 0.01
-	gunStates.Bullets = 0
-	gunStates.ReloadAnim = "ReloadMagazine"
-	gunStates.ShootAnim = "ShootBullet"
-	gunStates.HoldAnim = "Hold"
-	gunStates.FireSoundId = "http://www.roblox.com/asset/?id=2934888736"
-	gunStates.SecondarySoundId = nil
-	gunStates.ReloadSoundId = "http://www.roblox.com/asset/?id=2934887229"
-
-	-- 수정된 GunStates 테이블을 ReloadEvent로 서버에 전달
-	game:GetService("ReplicatedStorage").ReloadEvent:FireServer(akItem)
-end
-
-local function teleport_f()
-	local character = Player.Character or Player.CharacterAdded:Wait()
-	local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-	local targetPosition = Vector3.new(-936, 93, 2056)
-	local originalPosition = humanoidRootPart.Position
-	local function teleportToPosition(position)
-		humanoidRootPart.CFrame = CFrame.new(position)
-	end
-	local function hasAK47()
-		for _, item in pairs(Player.Backpack:GetChildren()) do
-			if item.Name == "AK-47" then
-				return true
-			end
-		end
-		return false
-	end
-	local function performAction()
-		local ak47Item = workspace.Prison_ITEMS.giver:FindFirstChild("AK-47")
-		if ak47Item and ak47Item:IsA("Model") and ak47Item:FindFirstChild("ITEMPICKUP") then
-			local args = { ak47Item.ITEMPICKUP }
-			workspace.Remote.ItemHandler:InvokeServer(unpack(args))
-		else
-			warn("AK-47 item not found or ITEMPICKUP not available.")
-		end
-	end
-	local function returnToOriginalPosition()
-		humanoidRootPart.CFrame = CFrame.new(originalPosition)
-	end
-	local function teleportAndPerformAction()
-		teleportToPosition(targetPosition)
-		wait(0.1)
-		while not hasAK47() do
-			performAction()
-			wait(0.1)
-		end
-		returnToOriginalPosition()
-	end
-	teleportAndPerformAction()
-end
-
-local function getTargetPlayers()
-	local targetPlayers = {}
-	for _, player in pairs(Players:GetPlayers()) do
-		if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-			if player ~= Player then
-				table.insert(targetPlayers, player)
-			end
-		end
-	end
-	return targetPlayers
-end
-
--- 공격 루프 관리 변수
-local attacking = false
-
--- 공격 함수
-local function attackAllPlayers(onoff)
-	-- ReplicatedStorage와 공격 이벤트 가져오기
-	local ReplicatedStorage = game:GetService("ReplicatedStorage")
-	local meleeEvent = ReplicatedStorage:WaitForChild("meleeEvent")
-
-	-- 공격 시작 또는 중지 설정
-	attacking = onoff
-
-	if not attacking then
-		return -- 공격 중지
-	end
-
-	-- 대상 플레이어 목록 가져오기
-	local players = game:GetService("Players"):GetPlayers()
-	local localPlayer = game:GetService("Players").LocalPlayer
-	local character = localPlayer.Character
-
-	if not (character and character:FindFirstChild("HumanoidRootPart")) then
-		return -- 로컬 플레이어가 유효하지 않을 경우 종료
-	end
-
-	-- 모든 플레이어를 대상으로 공격 루프
-	while true do
-		if not attacking then
-			break -- 공격 중지
-		end
-
-		for _, player in pairs(players) do
-			if not attacking then
-				break -- 공격 중지
-			end
-
-			if player ~= localPlayer and player.Character and player.Character:FindFirstChild("Humanoid") then
-				local targetCharacter = player.Character
-				local targetHumanoid = targetCharacter.Humanoid
-
-				if targetHumanoid.Health > 0 and targetCharacter:FindFirstChild("HumanoidRootPart") then
-					-- 로컬 플레이어를 타겟 플레이어 근처로 텔레포트
-					character.HumanoidRootPart.CFrame = targetCharacter.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3) -- 약간 뒤로 이동
-
-					-- 공격 이벤트 발송
-					meleeEvent:FireServer(player)
-				end
-			end
-		end
-		wait(0.009) -- 이벤트 발송 간격
-	end
-
-	-- 공격 종료
-	attacking = false
-end
 ------------------------ 프리즌 라이프 -------------------------------
 --------------------------------------- 은신 기능 ----------------------------------------------------
--- 서비스와 플레이어 참조
-local players = game:GetService("Players")
-local runService = game:GetService("RunService")
-local userInputService = game:GetService("UserInputService")
-local localPlayer = players.LocalPlayer
-local camera = workspace.CurrentCamera
-
-function Transparency_toggle_bt(value)
-	--Settings:
-	local ScriptStarted = false
-	local Keybind = "H" --Set to whatever you want, has to be the name of a KeyCode Enum.
-	local Transparency = true --Will make you slightly transparent when you are invisible. No reason to disable.
-	local NoClip = false --Will make your fake character no clip.
-
-	local Player = game:GetService("Players").LocalPlayer
-	local RealCharacter = Player.Character or Player.CharacterAdded:Wait()
-
-	local IsInvisible = false
-
-	RealCharacter.Archivable = true
-	local FakeCharacter = RealCharacter:Clone()
-	local Part
-	Part = Instance.new("Part", workspace)
-	Part.Anchored = true
-	Part.Size = Vector3.new(200, 1, 200)
-	Part.CFrame = CFrame.new(0, -500, 0) --Set this to whatever you want, just far away from the map.
-	Part.CanCollide = true
-	FakeCharacter.Parent = workspace
-	FakeCharacter.HumanoidRootPart.CFrame = Part.CFrame * CFrame.new(0, 5, 0)
-
-	for i, v in pairs(RealCharacter:GetChildren()) do
-		if v:IsA("LocalScript") then
-			local clone = v:Clone()
-			clone.Disabled = true
-			clone.Parent = FakeCharacter
-		end
-	end
-	if Transparency then
-		for i, v in pairs(FakeCharacter:GetDescendants()) do
-			if v:IsA("BasePart") then
-				v.Transparency = 0.7
-			end
-		end
-	end
-	local CanInvis = true
-	function RealCharacterDied()
-		CanInvis = false
-		RealCharacter:Destroy()
-		RealCharacter = Player.Character
-		CanInvis = true
-		isinvisible = false
-		FakeCharacter:Destroy()
-		workspace.CurrentCamera.CameraSubject = RealCharacter.Humanoid
-
-		RealCharacter.Archivable = true
-		FakeCharacter = RealCharacter:Clone()
-		Part:Destroy()
-		Part = Instance.new("Part", workspace)
-		Part.Anchored = true
-		Part.Size = Vector3.new(200, 1, 200)
-		Part.CFrame = CFrame.new(9999, 9999, 9999) --Set this to whatever you want, just far away from the map.
-		Part.CanCollide = true
-		FakeCharacter.Parent = workspace
-		FakeCharacter.HumanoidRootPart.CFrame = Part.CFrame * CFrame.new(0, 5, 0)
+-.HumanoidRootPart.CFrame = Part.CFrame * CFrame.new(0, 5, 0)
 
 		for i, v in pairs(RealCharacter:GetChildren()) do
 			if v:IsA("LocalScript") then
@@ -2077,8 +1867,8 @@ local Button_CE_PING_HACK = Tab2:CreateButton({
     end
 })
 
----- 프리즌 라이프, 에임봇 ----
-local Tab11 = Window:CreateTab("프리즌 라이프 & 에임봇")
+---- FE 스크립트 ----
+local Tab11 = Window:CreateTab("fe 스크립트")
 
 Tab11:CreateSection("프리즌 라이프")
 
