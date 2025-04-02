@@ -1870,14 +1870,17 @@ local Button_CE_PING_HACK = Tab2:CreateButton({
 ---- FE 스크립트 ----
 local Tab11 = Window:CreateTab("fe 스크립트")
 
-Tab11:CreateSection("프리즌 라이프")
-
-Tab11:CreateButton({
-	Name = "AK-47 Get",
-	Callback = function()
-		showMessage("AK-47 Get")
-		teleport_f()
-	end
+Tab11:CreateToggle({
+    Name = "갓",
+    CurrentValue = false,
+    Flag = "FeatureToggle",
+    Callback = function(Value)
+        if Value then
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/zephyr10101/ignore-touchinterests/main/main", true))()
+        else
+            print("토글 비활성화됨")
+        end
+    end
 })
 
 Tab11:CreateButton({
