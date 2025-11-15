@@ -1,0 +1,50 @@
+local P = game:GetService("Players")
+local M = game:GetService("MarketplaceService")
+local S = game:GetService("ServerStorage")
+
+local ID =  -- 게임패스 애셋 아이디 적어요
+local TN = "Purple"
+
+local F = S:FindFirstChild("Tools")
+
+local function H(p)
+	local ok, own = pcall(function()
+		return M:UserOwnsGamePassAsync(p.UserId, ID)
+	end)
+	if ok then
+		return own
+	end
+	return false
+end
+
+local function C(p)
+	if p.Backpack:FindFirstChild(TN) then
+		return true
+	end
+	if p.Character and p.Character:FindFirstChild(TN) then
+		return true
+	end
+	return false
+end
+
+local function G(p)
+	if not H(p) then return end
+	if C(p) then return end
+	local t = F:FindFirstChild(TN)
+	if not t then return end
+	t:Clone().Parent = p.Backpack
+end
+
+P.PlayerAdded:Connect(function(p)
+	G(p)
+	p.CharacterAdded:Connect(function()
+		task.wait(0.2)
+		G(p)
+	end)
+end)
+
+M.PromptGamePassPurchaseFinished:Connect(function(p, id, ok)
+	if id == ID and ok then
+		G(p)
+	end
+end)
